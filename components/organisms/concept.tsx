@@ -6,7 +6,7 @@ import Title from '../atoms/title';
 
 const Concept: React.FC = () => {
   return (
-    <div className="mr-4 p-6 bg-[#EDE9D0] text-left">
+    <div className="mr-4 my-8 p-6 bg-[#EDE9D0] text-left">
       <Title align="left">どんなコンセプトなの？</Title>
       <div className="relative">
         <div className="text-transparent">

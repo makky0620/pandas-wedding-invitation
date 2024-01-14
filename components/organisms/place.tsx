@@ -6,7 +6,7 @@ import Title from '../atoms/title';
 
 const Place = () => {
   return (
-    <div className="ml-4 p-6 bg-[#F6C90E]">
+    <div className="ml-4 my-8 p-6 bg-[#F6C90E]">
       <Title align="right">会場はどこなの？</Title>
       <div className="relative mb-6">
         <div className="text-transparent">
