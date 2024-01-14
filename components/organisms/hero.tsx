@@ -19,6 +19,7 @@ const Hero = () => {
           ref={videoRef}
           src="/hero.mp4"
           autoPlay
+          playsInline
           muted
           loop
           className="w-full object-contain z-0"
