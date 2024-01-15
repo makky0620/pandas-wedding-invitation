@@ -3,6 +3,7 @@ import Greeting from '@/components/organisms/greeting';
 import Hero from '@/components/organisms/hero';
 import InvitationForm from '@/components/organisms/invitationForm';
 import Place from '@/components/organisms/place';
+import Price from '@/components/organisms/price';
 import Schedule from '@/components/organisms/schedule';
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
       <Concept />
       <Place />
       <Schedule />
+      <Price />
       <InvitationForm />
     </main>
   );
