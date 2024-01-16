@@ -1,3 +1,6 @@
+import NameField from '../atoms/nameField';
+import TextField from '../atoms/textField';
+
 const InvitationForm = () => {
   return (
     <div className="p-6">
@@ -46,61 +49,38 @@ const InvitationForm = () => {
           </div>
           <span className="ml-3">鵜川 恵理子</span>
         </label>
-
-        <div></div>
       </div>
       <div className="mb-3">
-        <div className="mb-3">お名前</div>
-        <div className="flex">
-          <input
-            type="text"
-            placeholder="性"
-            className="w-full border border-black px-4 mr-2"
-          />
-          <input
-            type="text"
-            placeholder="名"
-            className="w-full border border-black p-3 ml-2"
-          />
-        </div>
+        <NameField
+          label="お名前"
+          firstPlaceholder="姓"
+          secondPlaceholder="名"
+        />
       </div>
       <div className="mb-3">
-        <div className="mb-3">ふりがな</div>
-        <div className="flex">
-          <input
-            type="text"
-            placeholder="せい"
-            className="w-full border border-black px-4 mr-2"
-          />
-          <input
-            type="text"
-            placeholder="めい"
-            className="w-full border border-black p-3 ml-2"
-          />
-        </div>
+        <NameField
+          label="ふりがな"
+          firstPlaceholder="せい"
+          secondPlaceholder="めい"
+        />
       </div>
       <div className="mb-3">
-        <div className="mb-3">郵便番号</div>
-        <input
-          type="text"
+        <TextField
+          label="郵便番号"
           placeholder="111-1111の形式でご入力ください"
-          className="w-full border border-black p-3"
         />
       </div>
       <div className="mb-3">
-        <div className="mb-3">ご住所</div>
-        <input
-          type="text"
+        <TextField
+          label="ご住所"
           placeholder="神奈川県横浜市都筑区●●-●● ドットマンション101"
-          className="w-full border border-black p-3"
         />
       </div>
+
       <div className="mb-3">
-        <div className="mb-3">お電話番号</div>
-        <input
-          type="text"
+        <TextField
+          label="お電話番号"
           placeholder="1111-111-111の形式でご入力ください"
-          className="w-full border border-black p-3"
         />
       </div>
       <div className="mb-3">
