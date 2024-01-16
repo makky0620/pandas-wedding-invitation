@@ -9,7 +9,7 @@ import Schedule from '@/components/organisms/schedule';
 
 export default function Home() {
   return (
-    <main>
+    <main className="font-serif">
       <Hero />
       <Greeting />
       <Concept />
