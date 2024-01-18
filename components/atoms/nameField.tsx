@@ -65,28 +65,48 @@ export const NameField: React.FC<Props> = ({
   }, [onChange, lastName, firstName]);
 
   const lastNameBorder = error.last ? 'border-red-500' : 'border-black';
-  const lastNameClasses = clsx('w-full border p-3 mr-2', lastNameBorder);
+  const lastNameClasses = clsx('w-full border p-3', lastNameBorder);
   const firstNameBorder = error.first ? 'border-red-500' : 'border-black';
-  const firstNameClasses = clsx('w-full border p-3 mr-2', firstNameBorder);
+  const firstNameClasses = clsx('w-full border p-3', firstNameBorder);
 
   return (
     <>
       <div className="mb-3">{label}</div>
       <div className="flex">
-        <input
-          type="text"
-          value={lastName}
-          onChange={handleLastName}
-          placeholder={firstPlaceholder}
-          className={lastNameClasses}
-        />
-        <input
-          type="text"
-          value={firstName}
-          onChange={handleFirstName}
-          placeholder={secondPlaceholder}
-          className={firstNameClasses}
-        />
+        <div className="mr-2">
+          <input
+            type="text"
+            value={lastName}
+            onChange={handleLastName}
+            placeholder={firstPlaceholder}
+            className={lastNameClasses}
+          />
+          <div
+            className={clsx(
+              'text-xs mx-2 mt-1',
+              error.last ? 'text-red-500' : 'text-transparent',
+            )}
+          >
+            必須項目です
+          </div>
+        </div>
+        <div className="mr-2">
+          <input
+            type="text"
+            value={firstName}
+            onChange={handleFirstName}
+            placeholder={secondPlaceholder}
+            className={firstNameClasses}
+          />
+          <div
+            className={clsx(
+              'text-xs mx-2 mt-1',
+              error.first ? 'text-red-500' : 'text-transparent',
+            )}
+          >
+            必須項目です
+          </div>
+        </div>
       </div>
     </>
   );

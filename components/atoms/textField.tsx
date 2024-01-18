@@ -41,8 +41,10 @@ export const TextField: React.FC<Props> = ({
     [onChange],
   );
 
-
-  const inputClasses = clsx('w-full border p-3', error ? 'border-red-500' : 'border-black')
+  const inputClasses = clsx(
+    'w-full border p-3',
+    error ? 'border-red-500' : 'border-black',
+  );
 
   return (
     <>
@@ -54,6 +56,14 @@ export const TextField: React.FC<Props> = ({
         placeholder={placeholder}
         className={inputClasses}
       />
+      <div
+        className={clsx(
+          'text-xs mx-2 mt-1',
+          error ? 'text-red-500' : 'text-transparent',
+        )}
+      >
+        必須項目です
+      </div>
     </>
   );
 };
