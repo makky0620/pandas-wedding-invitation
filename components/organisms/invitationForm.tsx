@@ -2,11 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { NameField, TextField, useNameField, useTextField } from '../atoms';
-
-type FormInput = {
-  phoneNumber: string;
-  note: string;
-};
+import { Radio, useRadioGroup } from '../atoms/radio';
 
 type FormError = {
   firstName: boolean;
@@ -16,11 +12,6 @@ type FormError = {
   postCode: boolean;
   address: boolean;
   phoneNumber: boolean;
-};
-
-const initialInput: FormInput = {
-  phoneNumber: '',
-  note: '',
 };
 
 const initialError: FormError = {
@@ -34,8 +25,9 @@ const initialError: FormError = {
 };
 
 const InvitationForm = () => {
-  const [formInput, setFormInput] = useState<FormInput>(initialInput);
   const [formError, setFormError] = useState<FormError>(initialError);
+
+  const invitationSource = useRadioGroup();
   const name = useNameField('お名前', { last: '姓', first: '名' });
   const kana = useNameField('ふりがな', { last: 'せい', first: 'めい' });
   const postCode = useTextField('郵便番号', {
@@ -47,6 +39,7 @@ const InvitationForm = () => {
   const phoneNumber = useTextField('お電話番号', {
     placeholder: '1111-111-111の形式でご入力ください',
   });
+  const [note, setNote] = useState<string>('');
 
   useEffect(() => {
     if (name.value.firstName.length > 0 && formError.firstName) {
@@ -86,7 +79,7 @@ const InvitationForm = () => {
 
   const handleNote = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setFormInput((prev) => ({ ...prev, note: e.target.value }));
+      setNote(e.target.value);
     },
     [],
   );
@@ -142,22 +135,21 @@ const InvitationForm = () => {
           </label>
         </div>
       </div>
+
       <div className="mb-3">
         <div className="mb-3">招待元</div>
-        <label className="flex items-center cursor-pointer">
-          <div className="relative">
-            <div className="w-4 h-4 border border-black"></div>
-            <input id="radio" type="radio" className="hidden" />
-          </div>
-          <span className="ml-3">牧野 孝史</span>
-        </label>
-        <label className="flex items-center cursor-pointer">
-          <div className="relative">
-            <div className="w-4 h-4 border border-black"></div>
-            <input id="radio" type="radio" className="hidden" />
-          </div>
-          <span className="ml-3">鵜川 恵理子</span>
-        </label>
+        <Radio
+          value="takashi"
+          name="牧野 孝史"
+          checked={invitationSource.selected === 'takashi'}
+          onChange={invitationSource.onChange}
+        />
+        <Radio
+          value="eriko"
+          name="鵜川 恵理子"
+          checked={invitationSource.selected === 'eriko'}
+          onChange={invitationSource.onChange}
+        />
       </div>
       <div className="mb-3">
         <NameField
@@ -212,7 +204,7 @@ const InvitationForm = () => {
       <div className="mb-3">
         <div className="mb-3">アレルギー等</div>
         <textarea
-          value={formInput.note}
+          value={note}
           onChange={handleNote}
           placeholder="アレルギーやその他注意事項がございましたらご入力ください"
           className="w-full border border-black p-3"
