@@ -183,6 +183,7 @@ const InvitationForm = () => {
           value={postCode.value}
           onChange={postCode.onChange}
           placeholder={postCode.placeholder}
+          error={formError.postCode}
         />
       </div>
       <div className="mb-3">
@@ -191,6 +192,7 @@ const InvitationForm = () => {
           value={address.value}
           onChange={address.onChange}
           placeholder={address.placeholder}
+          error={formError.address}
         />
       </div>
       <div className="mb-3">
@@ -199,6 +201,7 @@ const InvitationForm = () => {
           value={phoneNumber.value}
           onChange={phoneNumber.onChange}
           placeholder={phoneNumber.placeholder}
+          error={formError.phoneNumber}
         />
       </div>
       <div className="mb-3">

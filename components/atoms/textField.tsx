@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { InputHTMLAttributes, useCallback, useState } from 'react';
 
 export const useTextField = (
@@ -22,6 +23,7 @@ type Props = {
   label: string;
   value: string;
   onChange: (value: string) => void;
+  error?: boolean;
   placeholder?: string;
 };
 
@@ -29,6 +31,7 @@ export const TextField: React.FC<Props> = ({
   label,
   value,
   onChange,
+  error = false,
   placeholder,
 }) => {
   const handleValue = useCallback(
@@ -38,6 +41,9 @@ export const TextField: React.FC<Props> = ({
     [onChange],
   );
 
+
+  const inputClasses = clsx('w-full border p-3', error ? 'border-red-500' : 'border-black')
+
   return (
     <>
       <div className="mb-3">{label}</div>
@@ -46,7 +52,7 @@ export const TextField: React.FC<Props> = ({
         value={value}
         onChange={handleValue}
         placeholder={placeholder}
-        className="w-full border border-black p-3"
+        className={inputClasses}
       />
     </>
   );

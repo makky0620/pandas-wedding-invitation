@@ -14,14 +14,10 @@ export const useNameField = (
   const [lastName, setLastName] = useState<string>('');
   const [firstName, setFirstName] = useState<string>('');
 
-  const handleField = useCallback(
-    (lastName: string, firstName: string) => {
-      setLastName(lastName);
-      setFirstName(firstName);
-    },
-
-    [],
-  );
+  const handleField = useCallback((lastName: string, firstName: string) => {
+    setLastName(lastName);
+    setFirstName(firstName);
+  }, []);
 
   return {
     ...inputProps,
