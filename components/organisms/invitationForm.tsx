@@ -1,6 +1,6 @@
 'use client';
 
-import { TextareaHTMLAttributes, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { NameField, TextField } from '../atoms';
 
 type FormInput = {
