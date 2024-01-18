@@ -1,8 +1,10 @@
+import clsx from 'clsx';
 import React, { useCallback, useEffect, useState } from 'react';
 
 type Props = {
   label: string;
   onChange: (last: string, first: string) => void;
+  error?: { last: boolean; first: boolean };
   firstPlaceholder?: string;
   secondPlaceholder?: string;
 };
@@ -10,6 +12,7 @@ type Props = {
 export const NameField: React.FC<Props> = ({
   label,
   onChange,
+  error = { last: false, first: false },
   firstPlaceholder,
   secondPlaceholder,
 }) => {
@@ -34,6 +37,11 @@ export const NameField: React.FC<Props> = ({
     onChange(lastName, firstName);
   }, [onChange, lastName, firstName]);
 
+  const lastNameBorder = error.last ? 'border-red-500' : 'border-black';
+  const lastNameClasses = clsx('w-full border p-3 mr-2', lastNameBorder);
+  const firstNameBorder = error.first ? 'border-red-500' : 'border-black';
+  const firstNameClasses = clsx('w-full border p-3 mr-2', firstNameBorder);
+
   return (
     <>
       <div className="mb-3">{label}</div>
@@ -43,14 +51,14 @@ export const NameField: React.FC<Props> = ({
           value={lastName}
           onChange={handleLastName}
           placeholder={firstPlaceholder}
-          className="w-full border border-black px-4 mr-2"
+          className={lastNameClasses}
         />
         <input
           type="text"
           value={firstName}
           onChange={handleFirstName}
           placeholder={secondPlaceholder}
-          className="w-full border border-black p-3 ml-2"
+          className={firstNameClasses}
         />
       </div>
     </>
