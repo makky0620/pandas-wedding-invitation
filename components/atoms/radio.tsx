@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { useCallback, useState } from 'react';
 
 export const useRadioGroup = () => {
@@ -19,6 +20,7 @@ type RadioProps = {
   name: string;
   checked: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  labelClassName?: string;
 };
 
 export const Radio: React.FC<RadioProps> = ({
@@ -26,6 +28,7 @@ export const Radio: React.FC<RadioProps> = ({
   name,
   checked,
   onChange,
+  labelClassName,
 }) => {
   return (
     <label className="flex items-center cursor-pointer">
@@ -43,7 +46,7 @@ export const Radio: React.FC<RadioProps> = ({
           checked={checked}
         />
       </div>
-      <span className="ml-3">{name}</span>
+      <span className={clsx('ml-3', labelClassName)}>{name}</span>
     </label>
   );
 };

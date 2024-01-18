@@ -27,7 +27,8 @@ const initialError: FormError = {
 const InvitationForm = () => {
   const [formError, setFormError] = useState<FormError>(initialError);
 
-  const invitationSource = useRadioGroup();
+  const attendaceRadio = useRadioGroup();
+  const invitationRadio = useRadioGroup();
   const name = useNameField('お名前', { last: '姓', first: '名' });
   const kana = useNameField('ふりがな', { last: 'せい', first: 'めい' });
   const postCode = useTextField('郵便番号', {
@@ -119,36 +120,35 @@ const InvitationForm = () => {
       </div>
       <div className="mb-3">
         <div className="flex justify-around my-9">
-          <label className="flex items-center cursor-pointer">
-            <div className="relative">
-              <div className="w-4 h-4 border border-black"></div>
-              <input id="radio" type="radio" className="hidden" />
-            </div>
-            <span className="ml-3 text-xl">ご出席</span>
-          </label>
-          <label className="flex items-center cursor-pointer">
-            <div className="relative">
-              <div className="w-4 h-4 border border-black"></div>
-              <input id="radio" type="radio" className="hidden" />
-            </div>
-            <span className="ml-3 text-xl">ご欠席</span>
-          </label>
+          <Radio
+            value="yes"
+            name="ご出席"
+            checked={attendaceRadio.selected === 'yes'}
+            onChange={attendaceRadio.onChange}
+            labelClassName="text-xl"
+          />
+          <Radio
+            value="no"
+            name="ご欠席"
+            checked={attendaceRadio.selected === 'no'}
+            onChange={attendaceRadio.onChange}
+            labelClassName="text-xl"
+          />
         </div>
       </div>
-
       <div className="mb-3">
-        <div className="mb-3">招待元</div>
+        <div className="mb-1">招待元</div>
         <Radio
           value="takashi"
           name="牧野 孝史"
-          checked={invitationSource.selected === 'takashi'}
-          onChange={invitationSource.onChange}
+          checked={invitationRadio.selected === 'takashi'}
+          onChange={invitationRadio.onChange}
         />
         <Radio
           value="eriko"
           name="鵜川 恵理子"
-          checked={invitationSource.selected === 'eriko'}
-          onChange={invitationSource.onChange}
+          checked={invitationRadio.selected === 'eriko'}
+          onChange={invitationRadio.onChange}
         />
       </div>
       <div className="mb-3">
