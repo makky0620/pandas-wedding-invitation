@@ -1,13 +1,9 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { NameField, TextField } from '../atoms';
+import { NameField, TextField, useNameField } from '../atoms';
 
 type FormInput = {
-  firstName: string;
-  lastName: string;
-  firstKana: string;
-  lastKana: string;
   postCode: string;
   address: string;
   phoneNumber: string;
@@ -26,10 +22,6 @@ type FormError = {
 };
 
 const initialInput: FormInput = {
-  firstName: '',
-  lastName: '',
-  firstKana: '',
-  lastKana: '',
   postCode: '',
   address: '',
   phoneNumber: '',
@@ -50,40 +42,25 @@ const initialError: FormError = {
 const InvitationForm = () => {
   const [formInput, setFormInput] = useState<FormInput>(initialInput);
   const [formError, setFormError] = useState<FormError>(initialError);
-
-  const handleName = useCallback((lastName: string, firstName: string) => {
-    setFormInput((prev) => ({
-      ...prev,
-      lastName: lastName,
-      firstName: firstName,
-    }));
-  }, []);
-
+  const name = useNameField('お名前', { last: '姓', first: '名' });
   useEffect(() => {
-    if (formInput.lastName.length > 0) {
-      setFormError((prev) => ({ ...prev, lastName: false }));
-    }
-    if (formInput.firstName.length > 0) {
+    if (name.value.firstName.length > 0 && formError.firstName) {
       setFormError((prev) => ({ ...prev, firstName: false }));
     }
-  }, [formInput.lastName, formInput.firstName]);
-
-  const handleKana = useCallback((lastKana: string, firstKana: string) => {
-    setFormInput((prev) => ({
-      ...prev,
-      lastKana: lastKana,
-      firstKana: firstKana,
-    }));
-  }, []);
-
-  useEffect(() => {
-    if (formInput.lastKana.length > 0) {
-      setFormError((prev) => ({ ...prev, lastKana: false }));
+    if (name.value.lastName.length > 0 && formError.lastName) {
+      setFormError((prev) => ({ ...prev, lastName: false }));
     }
-    if (formInput.firstKana.length > 0) {
+  }, [name.value, formError.firstName, formError.lastName]);
+
+  const kana = useNameField('ふりがな', { last: 'せい', first: 'めい' });
+  useEffect(() => {
+    if (kana.value.firstName.length > 0 && formError.firstKana) {
       setFormError((prev) => ({ ...prev, firstKana: false }));
     }
-  }, [formInput.lastKana, formInput.firstKana]);
+    if (kana.value.lastName.length > 0 && formError.lastKana) {
+      setFormError((prev) => ({ ...prev, lastKana: false }));
+    }
+  }, [kana.value, formError.firstKana, formError.lastKana]);
 
   const handlePostCode = useCallback((postCode: string) => {
     setFormInput((prev) => ({ ...prev, postCode: postCode }));
@@ -106,16 +83,16 @@ const InvitationForm = () => {
 
   const onSubmit = useCallback(() => {
     const errors: FormError = { ...initialError };
-    if (formInput.firstName.length === 0) {
+    if (name.value.firstName.length === 0) {
       errors.firstName = true;
     }
-    if (formInput.lastName.length === 0) {
+    if (name.value.lastName.length === 0) {
       errors.lastName = true;
     }
-    if (formInput.firstKana.length === 0) {
+    if (kana.value.firstName.length === 0) {
       errors.firstKana = true;
     }
-    if (formInput.lastKana.length === 0) {
+    if (kana.value.lastName.length === 0) {
       errors.lastKana = true;
     }
     if (formInput.postCode.length === 0) {
@@ -131,7 +108,7 @@ const InvitationForm = () => {
     }
 
     setFormError(errors);
-  }, [formInput]);
+  }, [formInput, name, kana]);
 
   return (
     <div className="p-6">
@@ -183,19 +160,19 @@ const InvitationForm = () => {
       </div>
       <div className="mb-3">
         <NameField
-          label="お名前"
-          onChange={handleName}
-          firstPlaceholder="姓"
-          secondPlaceholder="名"
+          label={name.label}
+          onChange={name.onChange}
+          firstPlaceholder={name.placeholder?.last}
+          secondPlaceholder={name.placeholder?.first}
           error={{ last: formError.lastName, first: formError.firstName }}
         />
       </div>
       <div className="mb-3">
         <NameField
-          label="ふりがな"
-          onChange={handleKana}
-          firstPlaceholder="せい"
-          secondPlaceholder="めい"
+          label={kana.label}
+          onChange={kana.onChange}
+          firstPlaceholder={kana.placeholder?.last}
+          secondPlaceholder={kana.placeholder?.first}
           error={{ last: formError.lastKana, first: formError.firstKana }}
         />
       </div>
