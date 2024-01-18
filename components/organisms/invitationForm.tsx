@@ -166,6 +166,7 @@ const InvitationForm = () => {
           firstPlaceholder={name.placeholder?.last}
           secondPlaceholder={name.placeholder?.first}
           error={{ last: formError.lastName, first: formError.firstName }}
+          required
         />
       </div>
       <div className="mb-3">
@@ -175,6 +176,7 @@ const InvitationForm = () => {
           firstPlaceholder={kana.placeholder?.last}
           secondPlaceholder={kana.placeholder?.first}
           error={{ last: formError.lastKana, first: formError.firstKana }}
+          required
         />
       </div>
       <div className="mb-3">
@@ -184,6 +186,7 @@ const InvitationForm = () => {
           onChange={postCode.onChange}
           placeholder={postCode.placeholder}
           error={formError.postCode}
+          required
         />
       </div>
       <div className="mb-3">
@@ -193,6 +196,7 @@ const InvitationForm = () => {
           onChange={address.onChange}
           placeholder={address.placeholder}
           error={formError.address}
+          required
         />
       </div>
       <div className="mb-3">
@@ -202,6 +206,7 @@ const InvitationForm = () => {
           onChange={phoneNumber.onChange}
           placeholder={phoneNumber.placeholder}
           error={formError.phoneNumber}
+          required
         />
       </div>
       <div className="mb-3">

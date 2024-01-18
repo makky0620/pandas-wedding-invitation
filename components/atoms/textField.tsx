@@ -24,6 +24,7 @@ type Props = {
   value: string;
   onChange: (value: string) => void;
   error?: boolean;
+  required?: boolean;
   placeholder?: string;
 };
 
@@ -32,6 +33,7 @@ export const TextField: React.FC<Props> = ({
   value,
   onChange,
   error = false,
+  required = false,
   placeholder,
 }) => {
   const handleValue = useCallback(
@@ -48,7 +50,10 @@ export const TextField: React.FC<Props> = ({
 
   return (
     <>
-      <div className="mb-3">{label}</div>
+      <div className="mb-1">
+        {label}
+        {required && <span className="ml-1 text-red-500">*</span>}
+      </div>
       <input
         type="text"
         value={value}

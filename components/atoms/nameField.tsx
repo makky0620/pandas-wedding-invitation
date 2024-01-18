@@ -32,6 +32,7 @@ type Props = {
   label: string;
   onChange: (last: string, first: string) => void;
   error?: { last: boolean; first: boolean };
+  required?: boolean;
   firstPlaceholder?: string;
   secondPlaceholder?: string;
 };
@@ -40,6 +41,7 @@ export const NameField: React.FC<Props> = ({
   label,
   onChange,
   error = { last: false, first: false },
+  required = false,
   firstPlaceholder,
   secondPlaceholder,
 }) => {
@@ -71,7 +73,10 @@ export const NameField: React.FC<Props> = ({
 
   return (
     <>
-      <div className="mb-3">{label}</div>
+      <div className="mb-1">
+        {label}
+        {required && <span className="ml-1 text-red-500">*</span>}
+      </div>
       <div className="flex">
         <div className="mr-2">
           <input
