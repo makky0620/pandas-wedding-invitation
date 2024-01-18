@@ -1,11 +1,9 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { NameField, TextField, useNameField } from '../atoms';
+import { NameField, TextField, useNameField, useTextField } from '../atoms';
 
 type FormInput = {
-  postCode: string;
-  address: string;
   phoneNumber: string;
   note: string;
 };
@@ -18,12 +16,9 @@ type FormError = {
   postCode: boolean;
   address: boolean;
   phoneNumber: boolean;
-  note: boolean;
 };
 
 const initialInput: FormInput = {
-  postCode: '',
-  address: '',
   phoneNumber: '',
   note: '',
 };
@@ -36,13 +31,23 @@ const initialError: FormError = {
   postCode: false,
   address: false,
   phoneNumber: false,
-  note: false,
 };
 
 const InvitationForm = () => {
   const [formInput, setFormInput] = useState<FormInput>(initialInput);
   const [formError, setFormError] = useState<FormError>(initialError);
   const name = useNameField('お名前', { last: '姓', first: '名' });
+  const kana = useNameField('ふりがな', { last: 'せい', first: 'めい' });
+  const postCode = useTextField('郵便番号', {
+    placeholder: '111-1111の形式でご入力ださい',
+  });
+  const address = useTextField('ご住所', {
+    placeholder: '神奈川県横浜市都筑区●●-●● ドットマンション101',
+  });
+  const phoneNumber = useTextField('お電話番号', {
+    placeholder: '1111-111-111の形式でご入力ください',
+  });
+
   useEffect(() => {
     if (name.value.firstName.length > 0 && formError.firstName) {
       setFormError((prev) => ({ ...prev, firstName: false }));
@@ -52,7 +57,6 @@ const InvitationForm = () => {
     }
   }, [name.value, formError.firstName, formError.lastName]);
 
-  const kana = useNameField('ふりがな', { last: 'せい', first: 'めい' });
   useEffect(() => {
     if (kana.value.firstName.length > 0 && formError.firstKana) {
       setFormError((prev) => ({ ...prev, firstKana: false }));
@@ -62,17 +66,23 @@ const InvitationForm = () => {
     }
   }, [kana.value, formError.firstKana, formError.lastKana]);
 
-  const handlePostCode = useCallback((postCode: string) => {
-    setFormInput((prev) => ({ ...prev, postCode: postCode }));
-  }, []);
+  useEffect(() => {
+    if (postCode.value.length > 0 && formError.postCode) {
+      setFormError((prev) => ({ ...prev, postCode: false }));
+    }
+  }, [postCode.value, formError.postCode]);
 
-  const handleAddress = useCallback((address: string) => {
-    setFormInput((prev) => ({ ...prev, address: address }));
-  }, []);
+  useEffect(() => {
+    if (address.value.length > 0 && formError.address) {
+      setFormError((prev) => ({ ...prev, address: false }));
+    }
+  }, [address.value, formError.address]);
 
-  const handlePhoneNumber = useCallback((phoneNumber: string) => {
-    setFormInput((prev) => ({ ...prev, phoneNumber: phoneNumber }));
-  }, []);
+  useEffect(() => {
+    if (phoneNumber.value.length > 0 && formError.phoneNumber) {
+      setFormError((prev) => ({ ...prev, phoneNumber: false }));
+    }
+  }, [phoneNumber.value, formError.phoneNumber]);
 
   const handleNote = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -82,33 +92,24 @@ const InvitationForm = () => {
   );
 
   const onSubmit = useCallback(() => {
-    const errors: FormError = { ...initialError };
-    if (name.value.firstName.length === 0) {
-      errors.firstName = true;
-    }
-    if (name.value.lastName.length === 0) {
-      errors.lastName = true;
-    }
-    if (kana.value.firstName.length === 0) {
-      errors.firstKana = true;
-    }
-    if (kana.value.lastName.length === 0) {
-      errors.lastKana = true;
-    }
-    if (formInput.postCode.length === 0) {
-      errors.postCode = true;
-    }
-
-    if (formInput.address.length === 0) {
-      errors.address = true;
-    }
-
-    if (formInput.phoneNumber.length === 0) {
-      errors.phoneNumber = true;
-    }
+    const errors: FormError = {
+      firstName: name.value.firstName.length === 0,
+      lastName: name.value.lastName.length === 0,
+      firstKana: kana.value.firstName.length === 0,
+      lastKana: kana.value.lastName.length === 0,
+      postCode: postCode.value.length === 0,
+      address: address.value.length === 0,
+      phoneNumber: phoneNumber.value.length === 0,
+    };
 
     setFormError(errors);
-  }, [formInput, name, kana]);
+  }, [
+    name.value,
+    kana.value,
+    postCode.value,
+    address.value,
+    phoneNumber.value,
+  ]);
 
   return (
     <div className="p-6">
@@ -178,27 +179,26 @@ const InvitationForm = () => {
       </div>
       <div className="mb-3">
         <TextField
-          label="郵便番号"
-          value={formInput.postCode}
-          onChange={handlePostCode}
-          placeholder="111-1111の形式でご入力ください"
+          label={postCode.label}
+          value={postCode.value}
+          onChange={postCode.onChange}
+          placeholder={postCode.placeholder}
         />
       </div>
       <div className="mb-3">
         <TextField
-          label="ご住所"
-          value={formInput.address}
-          onChange={handleAddress}
-          placeholder="神奈川県横浜市都筑区●●-●● ドットマンション101"
+          label={address.label}
+          value={address.value}
+          onChange={address.onChange}
+          placeholder={address.placeholder}
         />
       </div>
-
       <div className="mb-3">
         <TextField
-          label="お電話番号"
-          value={formInput.phoneNumber}
-          onChange={handlePhoneNumber}
-          placeholder="1111-111-111の形式でご入力ください"
+          label={phoneNumber.label}
+          value={phoneNumber.value}
+          onChange={phoneNumber.onChange}
+          placeholder={phoneNumber.placeholder}
         />
       </div>
       <div className="mb-3">
