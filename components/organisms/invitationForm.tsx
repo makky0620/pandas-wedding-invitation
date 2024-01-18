@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { NameField, TextField, useNameField, useTextField } from '../atoms';
-import { Radio, useRadioGroup } from '../atoms/radio';
+import { Radio, RadioGroup, useRadioGroup } from '../atoms/radio';
 
 type FormError = {
+  invitationRadio: boolean;
   firstName: boolean;
   lastName: boolean;
   firstKana: boolean;
@@ -15,6 +16,7 @@ type FormError = {
 };
 
 const initialError: FormError = {
+  invitationRadio: false,
   firstName: false,
   lastName: false,
   firstKana: false,
@@ -87,6 +89,7 @@ const InvitationForm = () => {
 
   const onSubmit = useCallback(() => {
     const errors: FormError = {
+      invitationRadio: !invitationRadio.selected,
       firstName: name.value.firstName.length === 0,
       lastName: name.value.lastName.length === 0,
       firstKana: kana.value.firstName.length === 0,
@@ -98,6 +101,7 @@ const InvitationForm = () => {
 
     setFormError(errors);
   }, [
+    invitationRadio.selected,
     name.value,
     kana.value,
     postCode.value,
@@ -137,19 +141,20 @@ const InvitationForm = () => {
         </div>
       </div>
       <div className="mb-3">
-        <div className="mb-1">招待元</div>
-        <Radio
-          value="takashi"
-          name="牧野 孝史"
-          checked={invitationRadio.selected === 'takashi'}
-          onChange={invitationRadio.onChange}
-        />
-        <Radio
-          value="eriko"
-          name="鵜川 恵理子"
-          checked={invitationRadio.selected === 'eriko'}
-          onChange={invitationRadio.onChange}
-        />
+        <RadioGroup label="招待元" required error={formError.invitationRadio}>
+          <Radio
+            value="takashi"
+            name="牧野 孝史"
+            checked={invitationRadio.selected === 'takashi'}
+            onChange={invitationRadio.onChange}
+          />
+          <Radio
+            value="eriko"
+            name="鵜川 恵理子"
+            checked={invitationRadio.selected === 'eriko'}
+            onChange={invitationRadio.onChange}
+          />
+        </RadioGroup>
       </div>
       <div className="mb-3">
         <NameField
