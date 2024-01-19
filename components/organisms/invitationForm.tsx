@@ -1,8 +1,8 @@
 'use client';
 
+import { useNameField, useRadioGroup, useTextField } from '@/hooks';
 import { useCallback, useEffect, useState } from 'react';
-import { NameField, TextField, useNameField, useTextField } from '../atoms';
-import { Radio, RadioGroup, useRadioGroup } from '../atoms/radio';
+import { NameField, TextField, Radio, RadioGroup } from '../atoms';
 
 type FormError = {
   invitationRadio: boolean;
