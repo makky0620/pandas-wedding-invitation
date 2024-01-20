@@ -8,6 +8,7 @@ import {
 } from '@/hooks';
 import clsx from 'clsx';
 import { useCallback, useState } from 'react';
+import { Button, CircularProgress } from '@nextui-org/react';
 import { NameField, TextField, Radio, RadioGroup } from '../atoms';
 
 type FormData = {
@@ -26,6 +27,7 @@ type FormData = {
 export const InvitationForm = () => {
   const { addRow } = useSpreadsheet<FormData>();
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const attendaceRadio = useRadioGroup();
   const invitationRadio = useRadioGroup();
   const name = useNameField('お名前', { last: '姓', first: '名' });
@@ -87,6 +89,7 @@ export const InvitationForm = () => {
       return;
     }
 
+    setIsLoading(true);
     await addRow({
       attendance: attendaceRadio.selected,
       invitation: invitationRadio.selected,
@@ -100,6 +103,7 @@ export const InvitationForm = () => {
       note: note,
     });
 
+    setIsLoading(false);
     clearAll();
   }, [
     attendaceRadio,
@@ -239,6 +243,11 @@ export const InvitationForm = () => {
           上記の内容で送信する
         </button>
       </div>
+      {isLoading && (
+        <div className="fixed w-full h-full top-0 left-0 flex items-center justify-center bg-black bg-opacity-10">
+          <CircularProgress color="default" size="lg" />
+        </div>
+      )}
     </div>
   );
 };

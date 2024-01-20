@@ -32,7 +32,7 @@ export const NameField: React.FC<Props> = ({
         {required && <span className="ml-1 text-red-500">*</span>}
       </div>
       <div className="flex">
-        <div className="mr-2">
+        <div className="mr-2 grow">
           <input
             type="text"
             value={value.lastName}
@@ -51,7 +51,7 @@ export const NameField: React.FC<Props> = ({
             必須項目です
           </div>
         </div>
-        <div className="mr-2">
+        <div className="mr-2 grow">
           <input
             type="text"
             value={value.firstName}
