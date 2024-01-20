@@ -6,7 +6,7 @@ import Title from '../atoms/title';
 
 const Schedule: React.FC = () => {
   const { ref, inView } = useInView({
-    rootMargin: '-200px',
+    rootMargin: '-10px',
     triggerOnce: true,
   });
 

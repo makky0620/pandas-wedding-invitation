@@ -7,7 +7,7 @@ import Title from '../atoms/title';
 
 const Concept: React.FC = () => {
   const { ref, inView } = useInView({
-    rootMargin: '-200px',
+    rootMargin: '-10px',
     triggerOnce: true,
   });
 
