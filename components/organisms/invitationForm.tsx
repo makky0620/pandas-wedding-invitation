@@ -48,27 +48,47 @@ export const InvitationForm = () => {
     [],
   );
 
-  const onSubmit = useCallback(async () => {
-    name.validate();
-    kana.validate();
-    postCode.validate();
-    address.validate();
-    phoneNumber.validate();
-    attendaceRadio.validate();
-    invitationRadio.validate();
+  const clearAll = useCallback(() => {
+    attendaceRadio.clear();
+    invitationRadio.clear();
+    name.clear();
+    kana.clear();
+    postCode.clear();
+    address.clear();
+    phoneNumber.clear();
+    setNote('');
+  }, [
+    attendaceRadio,
+    invitationRadio,
+    name,
+    kana,
+    postCode,
+    address,
+    phoneNumber,
+  ]);
 
+  const onSubmit = useCallback(async () => {
+      const invalidAttendance = attendaceRadio.validateAndGet();
+      const invalidInvitation = invitationRadio.validateAndGet();
+      const invalidName = name.validateAndGet();
+      const invalidKana = kana.validateAndGet();
+      const invalidPostCode = postCode.validateAndGet();
+      const invalidAddress = address.validateAndGet();
+      const invalidPhoneNumber = phoneNumber.validateAndGet();
     if (
-      attendaceRadio.error ||
-      invitationRadio.error ||
-      Object.values(name.errors).some((e) => e) ||
-      Object.values(kana.errors).some((e) => e) ||
-      postCode.error ||
-      address.error ||
-      phoneNumber.error
+      invalidAttendance ||
+      invalidInvitation ||
+      invalidName ||
+      invalidKana ||
+      invalidPostCode ||
+      invalidAddress ||
+      invalidPhoneNumber
     ) {
+      console.log('Hello');
       return;
     }
 
+    console.log('Add row');
     await addRow({
       attendance: attendaceRadio.selected,
       invitation: invitationRadio.selected,
@@ -81,6 +101,8 @@ export const InvitationForm = () => {
       phoneNumber: phoneNumber.value,
       note: note,
     });
+
+    clearAll();
   }, [
     attendaceRadio,
     invitationRadio,
@@ -91,6 +113,7 @@ export const InvitationForm = () => {
     phoneNumber,
     note,
     addRow,
+    clearAll,
   ]);
 
   return (
@@ -155,6 +178,7 @@ export const InvitationForm = () => {
       <div className="mb-3">
         <NameField
           label={name.label}
+          value={name.value}
           onChange={name.onChange}
           firstPlaceholder={name.placeholder?.last}
           secondPlaceholder={name.placeholder?.first}
@@ -165,6 +189,7 @@ export const InvitationForm = () => {
       <div className="mb-3">
         <NameField
           label={kana.label}
+          value={kana.value}
           onChange={kana.onChange}
           firstPlaceholder={kana.placeholder?.last}
           secondPlaceholder={kana.placeholder?.first}
@@ -219,4 +244,3 @@ export const InvitationForm = () => {
     </div>
   );
 };
-

@@ -11,14 +11,21 @@ export const useRadioGroup = () => {
     [],
   );
 
-  const validate = useCallback(() => {
-    setError(selected.length === 0);
+  const validateAndGet = useCallback(() => {
+    const invalid = selected.length === 0;
+    setError(invalid);
+    return invalid;
   }, [selected]);
+
+  const clear = useCallback(() => {
+    setSelected('');
+  }, []);
 
   return {
     selected,
     onChange: handleSelected,
-    validate,
-    error
+    validateAndGet,
+    clear,
+    error,
   };
 };

@@ -24,12 +24,20 @@ export const useNameField = (
     setFirstName(firstName);
   }, []);
 
-  const validate = useCallback(() => {
+  const validateAndGet = useCallback(() => {
+    const invalidLastName = lastName.length === 0;
+    const invalidFistName = firstName.length === 0;
     setErrors({
-      lastName: lastName.length === 0,
-      firstName: firstName.length === 0,
+      lastName: invalidLastName,
+      firstName: invalidFistName,
     });
+    return invalidLastName || invalidFistName;
   }, [firstName, lastName]);
+
+  const clear = useCallback(() => {
+    setLastName('');
+    setFirstName('');
+  }, []);
 
   useEffect(() => {
     if (firstName.length > 0 && errors.firstName) {
@@ -46,7 +54,8 @@ export const useNameField = (
     placeholder,
     value: { lastName: lastName, firstName: firstName },
     onChange: handleField,
-    validate,
+    validateAndGet,
+    clear,
     errors,
   };
 };

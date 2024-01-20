@@ -11,9 +11,15 @@ export const useTextField = (
     setValue(value);
   }, []);
 
-  const validate = useCallback(() => {
-    setError(value.length === 0);
+  const validateAndGet = useCallback(() => {
+    const invalid = value.length === 0;
+    setError(invalid);
+    return invalid;
   }, [value]);
+
+  const clear = useCallback(() => {
+    setValue('');
+  }, []);
 
   useEffect(() => {
     if (value.length > 0 && error) {
@@ -26,7 +32,8 @@ export const useTextField = (
     label,
     value,
     onChange: handleValue,
-    validate,
+    validateAndGet,
+    clear,
     error,
   };
 };

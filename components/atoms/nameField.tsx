@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 type Props = {
   label: string;
+  value: { lastName: string; firstName: string };
   onChange: (last: string, first: string) => void;
   errors?: { lastName: boolean; firstName: boolean };
   required?: boolean;
@@ -12,33 +13,13 @@ type Props = {
 
 export const NameField: React.FC<Props> = ({
   label,
+  value,
   onChange,
   errors = { lastName: false, firstName: false },
   required = false,
   firstPlaceholder,
   secondPlaceholder,
 }) => {
-  const [lastName, setLastName] = useState<string>('');
-  const [firstName, setFirstName] = useState<string>('');
-
-  const handleLastName = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setLastName(e.target.value);
-    },
-    [],
-  );
-
-  const handleFirstName = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFirstName(e.target.value);
-    },
-    [],
-  );
-
-  useEffect(() => {
-    onChange(lastName, firstName);
-  }, [onChange, lastName, firstName]);
-
   const lastNameBorder = errors.lastName ? 'border-red-500' : 'border-black';
   const lastNameClasses = clsx('w-full border p-3', lastNameBorder);
   const firstNameBorder = errors.firstName ? 'border-red-500' : 'border-black';
@@ -54,8 +35,10 @@ export const NameField: React.FC<Props> = ({
         <div className="mr-2">
           <input
             type="text"
-            value={lastName}
-            onChange={handleLastName}
+            value={value.lastName}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              onChange(e.target.value, value.firstName)
+            }
             placeholder={firstPlaceholder}
             className={lastNameClasses}
           />
@@ -71,8 +54,10 @@ export const NameField: React.FC<Props> = ({
         <div className="mr-2">
           <input
             type="text"
-            value={firstName}
-            onChange={handleFirstName}
+            value={value.firstName}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              onChange(value.lastName, e.target.value)
+            }
             placeholder={secondPlaceholder}
             className={firstNameClasses}
           />
