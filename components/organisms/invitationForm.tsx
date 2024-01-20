@@ -6,6 +6,7 @@ import {
   useSpreadsheet,
   useTextField,
 } from '@/hooks';
+import clsx from 'clsx';
 import { useCallback, useEffect, useState } from 'react';
 import { NameField, TextField, Radio, RadioGroup } from '../atoms';
 
@@ -22,18 +23,7 @@ type FormData = {
   note: string;
 };
 
-type FormError = {
-  attendanceRadio: boolean;
-  invitationRadio: boolean;
-};
-
-const initialError: FormError = {
-  attendanceRadio: false,
-  invitationRadio: false,
-};
-
 const InvitationForm = () => {
-  const [formError, setFormError] = useState<FormError>(initialError);
   const { addRow } = useSpreadsheet<FormData>();
 
   const attendaceRadio = useRadioGroup();
@@ -64,20 +54,18 @@ const InvitationForm = () => {
     postCode.validate();
     address.validate();
     phoneNumber.validate();
-    const errors: FormError = {
-      attendanceRadio: attendaceRadio.selected.length === 0,
-      invitationRadio: invitationRadio.selected.length === 0,
-    };
+    attendaceRadio.validate();
+    invitationRadio.validate();
 
     if (
+      attendaceRadio.error ||
+      invitationRadio.error ||
       Object.values(name.errors).some((e) => e) ||
       Object.values(kana.errors).some((e) => e) ||
       postCode.error ||
       address.error ||
-      phoneNumber.error ||
-      Object.values(errors).some((error) => error)
+      phoneNumber.error
     ) {
-      setFormError(errors);
       return;
     }
 
@@ -94,8 +82,8 @@ const InvitationForm = () => {
       note: note,
     });
   }, [
-    attendaceRadio.selected,
-    invitationRadio.selected,
+    attendaceRadio,
+    invitationRadio,
     name,
     kana,
     postCode,
@@ -119,25 +107,37 @@ const InvitationForm = () => {
         <p>3月25日までに出席のお返事賜りますようお願い申し上げます</p>
       </div>
       <div className="mb-3">
-        <div className="flex justify-around my-9">
-          <Radio
-            value="yes"
-            name="ご出席"
-            checked={attendaceRadio.selected === 'yes'}
-            onChange={attendaceRadio.onChange}
-            labelClassName="text-xl"
-          />
-          <Radio
-            value="no"
-            name="ご欠席"
-            checked={attendaceRadio.selected === 'no'}
-            onChange={attendaceRadio.onChange}
-            labelClassName="text-xl"
-          />
+        <div className="my-9 text-center">
+          <div className="flex justify-center">
+            <Radio
+              value="yes"
+              name="ご出席"
+              checked={attendaceRadio.selected === 'yes'}
+              onChange={attendaceRadio.onChange}
+              className="mx-2"
+              labelClassName="text-xl"
+            />
+            <Radio
+              value="no"
+              name="ご欠席"
+              checked={attendaceRadio.selected === 'no'}
+              onChange={attendaceRadio.onChange}
+              className="mx-2"
+              labelClassName="text-xl"
+            />
+          </div>
+          <div
+            className={clsx(
+              'text-xl mx-2 mt-1',
+              attendaceRadio.error ? 'text-red-500' : 'text-transparent',
+            )}
+          >
+            ご回答ください
+          </div>
         </div>
       </div>
       <div className="mb-3">
-        <RadioGroup label="招待元" required error={formError.invitationRadio}>
+        <RadioGroup label="招待元" required error={invitationRadio.error}>
           <Radio
             value="takashi"
             name="牧野 孝史"

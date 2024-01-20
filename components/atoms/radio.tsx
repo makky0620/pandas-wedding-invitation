@@ -38,6 +38,7 @@ type RadioProps = {
   name: string;
   checked: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  className?: string;
   labelClassName?: string;
 };
 
@@ -46,10 +47,11 @@ export const Radio: React.FC<RadioProps> = ({
   name,
   checked,
   onChange,
+  className,
   labelClassName,
 }) => {
   return (
-    <label className="flex items-center cursor-pointer">
+    <label className={clsx("flex items-center cursor-pointer", className)}>
       <div className="relative">
         {checked ? (
           <div className="w-4 h-4 border border-black bg-black" />
