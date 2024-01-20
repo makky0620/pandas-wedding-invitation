@@ -1,15 +1,21 @@
 'use client';
 
 import { APIProvider, Map, Marker } from '@vis.gl/react-google-maps';
+import { useInView } from 'react-intersection-observer';
 import Typewriter from 'typewriter-effect';
 import Title from '../atoms/title';
 
 const Place = () => {
+  const { ref, inView } = useInView({
+    rootMargin: '-200px',
+    triggerOnce: true,
+  });
+
   return (
     <div className="ml-4 my-8 p-6 bg-[#F6C90E]">
       <Title align="right">会場はどこなの？</Title>
       <div className="relative mb-6">
-        <div className="text-transparent">
+        <div ref={ref} className="text-transparent">
           <p>
             妻・恵理子が育った神奈川県鎌倉市にある「笹野邸」が今回の会場となります
           </p>
@@ -21,27 +27,29 @@ const Place = () => {
           </p>
         </div>
         <div className="absolute top-0">
-          <Typewriter
-            onInit={(typewriter) => {
-              typewriter
-                .typeString(
-                  '妻・恵理子が育った神奈川県鎌倉市にある「笹野邸」が今回の会場となります',
-                )
-                .typeString('<br />')
-                .typeString(
-                  '広い庭園を有しておりその庭園をめいっぱい使わせていただく予定です',
-                )
+          {inView && (
+            <Typewriter
+              onInit={(typewriter) => {
+                typewriter
+                  .typeString(
+                    '妻・恵理子が育った神奈川県鎌倉市にある「笹野邸」が今回の会場となります',
+                  )
+                  .typeString('<br />')
+                  .typeString(
+                    '広い庭園を有しておりその庭園をめいっぱい使わせていただく予定です',
+                  )
 
-                .typeString('<br />')
-                .typeString(
-                  '鎌倉市の景観重要建築物にも指定されている素敵な邸宅で鎌倉を堪能していただきたいです',
-                )
-                .start();
-            }}
-            options={{
-              delay: 10,
-            }}
-          />
+                  .typeString('<br />')
+                  .typeString(
+                    '鎌倉市の景観重要建築物にも指定されている素敵な邸宅で鎌倉を堪能していただきたいです',
+                  )
+                  .start();
+              }}
+              options={{
+                delay: 10,
+              }}
+            />
+          )}
         </div>
       </div>
       <div className="mb-3">

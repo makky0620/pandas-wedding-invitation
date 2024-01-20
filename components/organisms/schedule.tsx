@@ -1,14 +1,20 @@
 'use client';
 
+import { useInView } from 'react-intersection-observer';
 import Typewriter from 'typewriter-effect';
 import Title from '../atoms/title';
 
 const Schedule: React.FC = () => {
+  const { ref, inView } = useInView({
+    rootMargin: '-200px',
+    triggerOnce: true,
+  });
+
   return (
     <div className="mr-4 my-8 p-6 bg-[#D8C595]">
       <Title align="left">当日のスケジュールは？</Title>
       <div className="relative mb-6">
-        <div className="text-transparent">
+        <div ref={ref} className="text-transparent">
           <p>
             庭園でのガーデンウェディングということで気持ちの良い気候であるということと　私たちが入籍した思い入れのある季節でもあるということから5月を選びました
           </p>
@@ -20,27 +26,29 @@ const Schedule: React.FC = () => {
           </p>
         </div>
         <div className="absolute top-0">
-          <Typewriter
-            onInit={(typewriter) => {
-              typewriter
-                .typeString(
-                  '庭園でのガーデンウェディングということで気持ちの良い気候であるということと　私たちが入籍した思い入れのある季節でもあるということから5月を選びました',
-                )
-                .typeString('<br />')
-                .typeString(
-                  '遠方から来てくださる方もいらっしゃるので　午後からのスタートとして日暮とともにお開きにしたいと思います',
-                )
+          {inView && (
+            <Typewriter
+              onInit={(typewriter) => {
+                typewriter
+                  .typeString(
+                    '庭園でのガーデンウェディングということで気持ちの良い気候であるということと　私たちが入籍した思い入れのある季節でもあるということから5月を選びました',
+                  )
+                  .typeString('<br />')
+                  .typeString(
+                    '遠方から来てくださる方もいらっしゃるので　午後からのスタートとして日暮とともにお開きにしたいと思います',
+                  )
 
-                .typeString('<br />')
-                .typeString(
-                  '当日はお天気に恵まれるようみなさま祈っていていただけると嬉しいです',
-                )
-                .start();
-            }}
-            options={{
-              delay: 10,
-            }}
-          />
+                  .typeString('<br />')
+                  .typeString(
+                    '当日はお天気に恵まれるようみなさま祈っていていただけると嬉しいです',
+                  )
+                  .start();
+              }}
+              options={{
+                delay: 10,
+              }}
+            />
+          )}
         </div>
       </div>
       <div>
