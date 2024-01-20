@@ -84,11 +84,9 @@ export const InvitationForm = () => {
       invalidAddress ||
       invalidPhoneNumber
     ) {
-      console.log('Hello');
       return;
     }
 
-    console.log('Add row');
     await addRow({
       attendance: attendaceRadio.selected,
       invitation: invitationRadio.selected,
