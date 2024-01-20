@@ -8,6 +8,7 @@ import {
   Outfit,
   InvitationForm,
   Header,
+  Logo,
 } from '@/components/organisms';
 
 export default function Home() {
@@ -22,6 +23,7 @@ export default function Home() {
         <Schedule />
         <Price />
         <Outfit />
+        <Logo />
         <InvitationForm />
       </main>
     </div>

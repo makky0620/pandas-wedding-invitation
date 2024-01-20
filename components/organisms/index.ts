@@ -7,3 +7,4 @@ export * from './place';
 export * from './price';
 export * from './schedule';
 export * from './header';
+export * from './logo';
