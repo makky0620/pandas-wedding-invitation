@@ -7,7 +7,7 @@ import {
   useTextField,
 } from '@/hooks';
 import clsx from 'clsx';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { NameField, TextField, Radio, RadioGroup } from '../atoms';
 
 type FormData = {
