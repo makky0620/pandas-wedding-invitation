@@ -68,13 +68,13 @@ export const InvitationForm = () => {
   ]);
 
   const onSubmit = useCallback(async () => {
-      const invalidAttendance = attendaceRadio.validateAndGet();
-      const invalidInvitation = invitationRadio.validateAndGet();
-      const invalidName = name.validateAndGet();
-      const invalidKana = kana.validateAndGet();
-      const invalidPostCode = postCode.validateAndGet();
-      const invalidAddress = address.validateAndGet();
-      const invalidPhoneNumber = phoneNumber.validateAndGet();
+    const invalidAttendance = attendaceRadio.validateAndGet();
+    const invalidInvitation = invitationRadio.validateAndGet();
+    const invalidName = name.validateAndGet();
+    const invalidKana = kana.validateAndGet();
+    const invalidPostCode = postCode.validateAndGet();
+    const invalidAddress = address.validateAndGet();
+    const invalidPhoneNumber = phoneNumber.validateAndGet();
     if (
       invalidAttendance ||
       invalidInvitation ||
