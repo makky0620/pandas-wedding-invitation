@@ -17,7 +17,7 @@ const Hero = () => {
       <div className="relative w-full">
         <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50" />
         <ReactPlayer
-          url="hero.mp4"
+          url="32_hero.mp4"
           playing
           muted
           loop
