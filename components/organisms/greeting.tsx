@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Greeting = () => {
+export const Greeting = () => {
   return (
     <div className="px-6 py-12">
       <Paragraph>
@@ -36,4 +36,3 @@ const Paragraph = ({ children }: { children: React.ReactNode }) => {
   return <p className="pb-6">{children}</p>;
 };
 
-export default Greeting;

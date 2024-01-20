@@ -23,7 +23,7 @@ type FormData = {
   note: string;
 };
 
-const InvitationForm = () => {
+export const InvitationForm = () => {
   const { addRow } = useSpreadsheet<FormData>();
 
   const attendaceRadio = useRadioGroup();
@@ -220,4 +220,3 @@ const InvitationForm = () => {
   );
 };
 
-export default InvitationForm;

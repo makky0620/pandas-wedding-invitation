@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import Typewriter from 'typewriter-effect';
 import Title from '../atoms/title';
 
-const Concept: React.FC = () => {
+export const Concept: React.FC = () => {
   const { ref, inView } = useInView({
     rootMargin: '-10px',
     triggerOnce: true,
@@ -75,4 +75,3 @@ const Concept: React.FC = () => {
   );
 };
 
-export default Concept;

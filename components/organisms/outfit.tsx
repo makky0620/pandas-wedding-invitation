@@ -4,7 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import Typewriter from 'typewriter-effect';
 import Title from '../atoms/title';
 
-const Outfit = () => {
+export const Outfit = () => {
   const { ref, inView } = useInView({
     rootMargin: '-10px',
     triggerOnce: true,
@@ -46,4 +46,3 @@ const Outfit = () => {
   );
 };
 
-export default Outfit;

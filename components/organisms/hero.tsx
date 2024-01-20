@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 
-const Hero = () => {
+export const Hero = () => {
   const [hasWindow, setHasWindow] = useState(false);
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -47,4 +47,3 @@ const Hero = () => {
   );
 };
 
-export default Hero;

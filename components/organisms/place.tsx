@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import Typewriter from 'typewriter-effect';
 import Title from '../atoms/title';
 
-const Place = () => {
+export const Place = () => {
   const { ref, inView } = useInView({
     rootMargin: '-10px',
     triggerOnce: true,
@@ -108,4 +108,3 @@ const Place = () => {
   );
 };
 
-export default Place;

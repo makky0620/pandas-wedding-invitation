@@ -4,7 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import Typewriter from 'typewriter-effect';
 import Title from '../atoms/title';
 
-const Schedule: React.FC = () => {
+export const Schedule: React.FC = () => {
   const { ref, inView } = useInView({
     rootMargin: '-10px',
     triggerOnce: true,
@@ -76,4 +76,3 @@ const Schedule: React.FC = () => {
   );
 };
 
-export default Schedule;
