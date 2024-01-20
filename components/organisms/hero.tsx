@@ -17,13 +17,25 @@ const Hero = () => {
         <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50" />
         {hasWindow && (
           <ReactPlayer
-            url="https://www.youtube.com/watch?v=LXb3EKWsInQ"
+            url="32_hero.mp4"
             playing
             volume={0}
             muted
             loop
             width="100%"
+            height="750px"
             playsinline
+            config={{
+              file: {
+                attributes: {
+                  style: {
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  },
+                },
+              },
+            }}
           />
         )}
         <div className="absolute bottom-[10%] left-4 text-white">
