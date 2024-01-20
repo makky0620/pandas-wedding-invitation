@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 type Props = {
   label: string;
   onChange: (last: string, first: string) => void;
-  error?: { last: boolean; first: boolean };
+  errors?: { lastName: boolean; firstName: boolean };
   required?: boolean;
   firstPlaceholder?: string;
   secondPlaceholder?: string;
@@ -13,7 +13,7 @@ type Props = {
 export const NameField: React.FC<Props> = ({
   label,
   onChange,
-  error = { last: false, first: false },
+  errors = { lastName: false, firstName: false },
   required = false,
   firstPlaceholder,
   secondPlaceholder,
@@ -39,9 +39,9 @@ export const NameField: React.FC<Props> = ({
     onChange(lastName, firstName);
   }, [onChange, lastName, firstName]);
 
-  const lastNameBorder = error.last ? 'border-red-500' : 'border-black';
+  const lastNameBorder = errors.lastName ? 'border-red-500' : 'border-black';
   const lastNameClasses = clsx('w-full border p-3', lastNameBorder);
-  const firstNameBorder = error.first ? 'border-red-500' : 'border-black';
+  const firstNameBorder = errors.firstName ? 'border-red-500' : 'border-black';
   const firstNameClasses = clsx('w-full border p-3', firstNameBorder);
 
   return (
@@ -62,7 +62,7 @@ export const NameField: React.FC<Props> = ({
           <div
             className={clsx(
               'text-xs mx-2 mt-1',
-              error.last ? 'text-red-500' : 'text-transparent',
+              errors.lastName ? 'text-red-500' : 'text-transparent',
             )}
           >
             必須項目です
@@ -79,7 +79,7 @@ export const NameField: React.FC<Props> = ({
           <div
             className={clsx(
               'text-xs mx-2 mt-1',
-              error.first ? 'text-red-500' : 'text-transparent',
+              errors.firstName ? 'text-red-500' : 'text-transparent',
             )}
           >
             必須項目です

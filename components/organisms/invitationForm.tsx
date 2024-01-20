@@ -25,10 +25,6 @@ type FormData = {
 type FormError = {
   attendanceRadio: boolean;
   invitationRadio: boolean;
-  firstName: boolean;
-  lastName: boolean;
-  firstKana: boolean;
-  lastKana: boolean;
   postCode: boolean;
   address: boolean;
   phoneNumber: boolean;
@@ -37,10 +33,6 @@ type FormError = {
 const initialError: FormError = {
   attendanceRadio: false,
   invitationRadio: false,
-  firstName: false,
-  lastName: false,
-  firstKana: false,
-  lastKana: false,
   postCode: false,
   address: false,
   phoneNumber: false,
@@ -64,24 +56,6 @@ const InvitationForm = () => {
     placeholder: '1111-111-111の形式でご入力ください',
   });
   const [note, setNote] = useState<string>('');
-
-  useEffect(() => {
-    if (name.value.firstName.length > 0 && formError.firstName) {
-      setFormError((prev) => ({ ...prev, firstName: false }));
-    }
-    if (name.value.lastName.length > 0 && formError.lastName) {
-      setFormError((prev) => ({ ...prev, lastName: false }));
-    }
-  }, [name.value, formError.firstName, formError.lastName]);
-
-  useEffect(() => {
-    if (kana.value.firstName.length > 0 && formError.firstKana) {
-      setFormError((prev) => ({ ...prev, firstKana: false }));
-    }
-    if (kana.value.lastName.length > 0 && formError.lastKana) {
-      setFormError((prev) => ({ ...prev, lastKana: false }));
-    }
-  }, [kana.value, formError.firstKana, formError.lastKana]);
 
   useEffect(() => {
     if (postCode.value.length > 0 && formError.postCode) {
@@ -109,19 +83,21 @@ const InvitationForm = () => {
   );
 
   const onSubmit = useCallback(async () => {
+    name.validate();
+    kana.validate();
     const errors: FormError = {
       attendanceRadio: attendaceRadio.selected.length === 0,
       invitationRadio: invitationRadio.selected.length === 0,
-      firstName: name.value.firstName.length === 0,
-      lastName: name.value.lastName.length === 0,
-      firstKana: kana.value.firstName.length === 0,
-      lastKana: kana.value.lastName.length === 0,
       postCode: postCode.value.length === 0,
       address: address.value.length === 0,
       phoneNumber: phoneNumber.value.length === 0,
     };
 
-    if (Object.values(errors).some((error) => error)) {
+    if (
+      Object.values(name.errors).some((e) => e) ||
+      Object.values(kana.errors).some((e) => e) ||
+      Object.values(errors).some((error) => error)
+    ) {
       setFormError(errors);
       return;
     }
@@ -141,8 +117,8 @@ const InvitationForm = () => {
   }, [
     attendaceRadio.selected,
     invitationRadio.selected,
-    name.value,
-    kana.value,
+    name,
+    kana,
     postCode.value,
     address.value,
     phoneNumber.value,
@@ -203,7 +179,7 @@ const InvitationForm = () => {
           onChange={name.onChange}
           firstPlaceholder={name.placeholder?.last}
           secondPlaceholder={name.placeholder?.first}
-          error={{ last: formError.lastName, first: formError.firstName }}
+          errors={name.errors}
           required
         />
       </div>
@@ -213,7 +189,7 @@ const InvitationForm = () => {
           onChange={kana.onChange}
           firstPlaceholder={kana.placeholder?.last}
           secondPlaceholder={kana.placeholder?.first}
-          error={{ last: formError.lastKana, first: formError.firstKana }}
+          errors={kana.errors}
           required
         />
       </div>
