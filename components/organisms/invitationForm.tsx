@@ -1,10 +1,29 @@
 'use client';
 
-import { useNameField, useRadioGroup, useTextField } from '@/hooks';
+import {
+  useNameField,
+  useRadioGroup,
+  useSpreadsheet,
+  useTextField,
+} from '@/hooks';
 import { useCallback, useEffect, useState } from 'react';
 import { NameField, TextField, Radio, RadioGroup } from '../atoms';
 
+type FormData = {
+  attendance: string;
+  invitation: string;
+  lastName: string;
+  firstName: string;
+  lastKana: string;
+  firstKana: string;
+  postCode: string;
+  address: string;
+  phoneNumber: string;
+  note: string;
+};
+
 type FormError = {
+  attendanceRadio: boolean;
   invitationRadio: boolean;
   firstName: boolean;
   lastName: boolean;
@@ -16,6 +35,7 @@ type FormError = {
 };
 
 const initialError: FormError = {
+  attendanceRadio: false,
   invitationRadio: false,
   firstName: false,
   lastName: false,
@@ -28,6 +48,7 @@ const initialError: FormError = {
 
 const InvitationForm = () => {
   const [formError, setFormError] = useState<FormError>(initialError);
+  const { addRow } = useSpreadsheet<FormData>();
 
   const attendaceRadio = useRadioGroup();
   const invitationRadio = useRadioGroup();
@@ -87,9 +108,10 @@ const InvitationForm = () => {
     [],
   );
 
-  const onSubmit = useCallback(() => {
+  const onSubmit = useCallback(async () => {
     const errors: FormError = {
-      invitationRadio: !invitationRadio.selected,
+      attendanceRadio: attendaceRadio.selected.length === 0,
+      invitationRadio: invitationRadio.selected.length === 0,
       firstName: name.value.firstName.length === 0,
       lastName: name.value.lastName.length === 0,
       firstKana: kana.value.firstName.length === 0,
@@ -99,14 +121,33 @@ const InvitationForm = () => {
       phoneNumber: phoneNumber.value.length === 0,
     };
 
-    setFormError(errors);
+    if (Object.values(errors).some((error) => error)) {
+      setFormError(errors);
+      return;
+    }
+
+    await addRow({
+      attendance: attendaceRadio.selected,
+      invitation: invitationRadio.selected,
+      lastName: name.value.lastName,
+      firstName: name.value.firstName,
+      lastKana: kana.value.lastName,
+      firstKana: kana.value.firstName,
+      postCode: postCode.value,
+      address: address.value,
+      phoneNumber: phoneNumber.value,
+      note: note,
+    });
   }, [
+    attendaceRadio.selected,
     invitationRadio.selected,
     name.value,
     kana.value,
     postCode.value,
     address.value,
     phoneNumber.value,
+    note,
+    addRow,
   ]);
 
   return (
