@@ -37,6 +37,7 @@ export const Price = () => {
               }}
               options={{
                 delay: 10,
+                wrapperClassName: 'break-all',
               }}
             />
           )}
@@ -48,4 +49,3 @@ export const Price = () => {
     </div>
   );
 };
-

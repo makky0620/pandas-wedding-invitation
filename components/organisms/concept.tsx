@@ -47,7 +47,6 @@ export const Concept: React.FC = () => {
                   .typeString('<br />')
                   .typeString('<br />')
                   .typeString('私たち二人が大切にしている座右の銘であり')
-
                   .typeString('<br />')
                   .typeString(
                     'スティーブ･ジョブズがスタンフォード大学の卒業式で語ったスピーチに登場したことでも有名です',
@@ -66,6 +65,7 @@ export const Concept: React.FC = () => {
               }}
               options={{
                 delay: 10,
+                wrapperClassName: 'break-all',
               }}
             />
           )}
@@ -74,4 +74,3 @@ export const Concept: React.FC = () => {
     </div>
   );
 };
-

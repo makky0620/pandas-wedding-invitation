@@ -46,6 +46,7 @@ export const Schedule: React.FC = () => {
               }}
               options={{
                 delay: 10,
+                wrapperClassName: 'break-all',
               }}
             />
           )}

@@ -47,6 +47,7 @@ export const Place = () => {
               }}
               options={{
                 delay: 10,
+                wrapperClassName: 'break-all',
               }}
             />
           )}

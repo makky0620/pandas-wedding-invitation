@@ -31,6 +31,7 @@ export const Outfit = () => {
               }}
               options={{
                 delay: 10,
+                wrapperClassName: 'break-all',
               }}
             />
           )}
