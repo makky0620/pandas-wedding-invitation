@@ -25,17 +25,11 @@ type FormData = {
 type FormError = {
   attendanceRadio: boolean;
   invitationRadio: boolean;
-  postCode: boolean;
-  address: boolean;
-  phoneNumber: boolean;
 };
 
 const initialError: FormError = {
   attendanceRadio: false,
   invitationRadio: false,
-  postCode: false,
-  address: false,
-  phoneNumber: false,
 };
 
 const InvitationForm = () => {
@@ -57,24 +51,6 @@ const InvitationForm = () => {
   });
   const [note, setNote] = useState<string>('');
 
-  useEffect(() => {
-    if (postCode.value.length > 0 && formError.postCode) {
-      setFormError((prev) => ({ ...prev, postCode: false }));
-    }
-  }, [postCode.value, formError.postCode]);
-
-  useEffect(() => {
-    if (address.value.length > 0 && formError.address) {
-      setFormError((prev) => ({ ...prev, address: false }));
-    }
-  }, [address.value, formError.address]);
-
-  useEffect(() => {
-    if (phoneNumber.value.length > 0 && formError.phoneNumber) {
-      setFormError((prev) => ({ ...prev, phoneNumber: false }));
-    }
-  }, [phoneNumber.value, formError.phoneNumber]);
-
   const handleNote = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setNote(e.target.value);
@@ -85,17 +61,20 @@ const InvitationForm = () => {
   const onSubmit = useCallback(async () => {
     name.validate();
     kana.validate();
+    postCode.validate();
+    address.validate();
+    phoneNumber.validate();
     const errors: FormError = {
       attendanceRadio: attendaceRadio.selected.length === 0,
       invitationRadio: invitationRadio.selected.length === 0,
-      postCode: postCode.value.length === 0,
-      address: address.value.length === 0,
-      phoneNumber: phoneNumber.value.length === 0,
     };
 
     if (
       Object.values(name.errors).some((e) => e) ||
       Object.values(kana.errors).some((e) => e) ||
+      postCode.error ||
+      address.error ||
+      phoneNumber.error ||
       Object.values(errors).some((error) => error)
     ) {
       setFormError(errors);
@@ -119,9 +98,9 @@ const InvitationForm = () => {
     invitationRadio.selected,
     name,
     kana,
-    postCode.value,
-    address.value,
-    phoneNumber.value,
+    postCode,
+    address,
+    phoneNumber,
     note,
     addRow,
   ]);
@@ -199,7 +178,7 @@ const InvitationForm = () => {
           value={postCode.value}
           onChange={postCode.onChange}
           placeholder={postCode.placeholder}
-          error={formError.postCode}
+          error={postCode.error}
           required
         />
       </div>
@@ -209,7 +188,7 @@ const InvitationForm = () => {
           value={address.value}
           onChange={address.onChange}
           placeholder={address.placeholder}
-          error={formError.address}
+          error={address.error}
           required
         />
       </div>
@@ -219,7 +198,7 @@ const InvitationForm = () => {
           value={phoneNumber.value}
           onChange={phoneNumber.onChange}
           placeholder={phoneNumber.placeholder}
-          error={formError.phoneNumber}
+          error={phoneNumber.error}
           required
         />
       </div>
