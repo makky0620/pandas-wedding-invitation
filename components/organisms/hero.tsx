@@ -18,14 +18,16 @@ const Hero = () => {
         <video
           ref={videoRef}
           src="/hero.mp4"
+          height="750"
           autoPlay
           playsInline
           muted
           loop
-          className="w-full object-contain z-0"
-        />
+        >
+          <source src="sample.mp4" type="video/mp4" />
+        </video>
         <div className="absolute bottom-[10%] left-4 text-white">
-          <div className="text-3xl">Hello!</div>
+          <div className="text-5xl">HELLO!</div>
           <div>welcome to our wedding party</div>
         </div>
       </div>
