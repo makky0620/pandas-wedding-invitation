@@ -2,10 +2,8 @@ import { google } from 'googleapis';
 
 export const POST = async (req: Request) => {
   const {
-    lastName,
-    firstName,
-    lastKana,
-    firstKana,
+    name,
+    kana,
     postCode,
     phoneNumber,
     address,
@@ -38,10 +36,10 @@ export const POST = async (req: Request) => {
     requestBody: {
       values: [
         [
-          lastName,
-          firstName,
-          lastKana,
-          firstKana,
+          name.lastName,
+          name.firstName,
+          kana.lastName,
+          kana.firstName,
           postCode,
           address,
           phoneNumber,

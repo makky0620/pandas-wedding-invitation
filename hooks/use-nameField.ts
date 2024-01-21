@@ -1,3 +1,4 @@
+import {FullName} from '@/domain';
 import { InputHTMLAttributes, useCallback, useEffect, useState } from 'react';
 
 type Errors = {
@@ -12,7 +13,7 @@ const initialErrors = {
 
 export const useNameField = (
   label: string,
-  placeholder?: { last?: string; first?: string },
+  placeholder?: FullName,
   inputProps?: InputHTMLAttributes<HTMLInputElement>,
 ) => {
   const [lastName, setLastName] = useState<string>('');

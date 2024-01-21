@@ -10,14 +10,13 @@ import clsx from 'clsx';
 import { useCallback, useState } from 'react';
 import { Button, CircularProgress } from '@nextui-org/react';
 import { NameField, TextField, Radio, RadioGroup } from '../atoms';
+import { FullName } from '@/domain';
 
 type FormData = {
   attendance: string;
   invitation: string;
-  lastName: string;
-  firstName: string;
-  lastKana: string;
-  firstKana: string;
+  name: FullName;
+  kana: FullName;
   postCode: string;
   address: string;
   phoneNumber: string;
@@ -30,8 +29,11 @@ export const InvitationForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const attendaceRadio = useRadioGroup();
   const invitationRadio = useRadioGroup();
-  const name = useNameField('お名前', { last: '姓', first: '名' });
-  const kana = useNameField('ふりがな', { last: 'せい', first: 'めい' });
+  const name = useNameField('お名前', { lastName: '姓', firstName: '名' });
+  const kana = useNameField('ふりがな', {
+    lastName: 'せい',
+    firstName: 'めい',
+  });
   const postCode = useTextField('郵便番号', {
     placeholder: '111-1111の形式でご入力ださい',
   });
@@ -93,10 +95,8 @@ export const InvitationForm = () => {
     await addRow({
       attendance: attendaceRadio.selected,
       invitation: invitationRadio.selected,
-      lastName: name.value.lastName,
-      firstName: name.value.firstName,
-      lastKana: kana.value.lastName,
-      firstKana: kana.value.firstName,
+      name: name.value,
+      kana: kana.value,
       postCode: postCode.value,
       address: address.value,
       phoneNumber: phoneNumber.value,
@@ -182,8 +182,8 @@ export const InvitationForm = () => {
           label={name.label}
           value={name.value}
           onChange={name.onChange}
-          firstPlaceholder={name.placeholder?.last}
-          secondPlaceholder={name.placeholder?.first}
+          firstPlaceholder={name.placeholder?.lastName}
+          secondPlaceholder={name.placeholder?.firstName}
           errors={name.errors}
           required
         />
@@ -193,8 +193,8 @@ export const InvitationForm = () => {
           label={kana.label}
           value={kana.value}
           onChange={kana.onChange}
-          firstPlaceholder={kana.placeholder?.last}
-          secondPlaceholder={kana.placeholder?.first}
+          firstPlaceholder={kana.placeholder?.lastName}
+          secondPlaceholder={kana.placeholder?.firstName}
           errors={kana.errors}
           required
         />
