@@ -8,7 +8,7 @@ import {
 } from '@/hooks';
 import clsx from 'clsx';
 import { useCallback, useState } from 'react';
-import { Button, CircularProgress } from '@nextui-org/react';
+import { CircularProgress } from '@nextui-org/react';
 import { NameField, TextField, Radio, RadioGroup } from '../atoms';
 import { FullName } from '@/domain';
 
@@ -120,19 +120,19 @@ export const InvitationForm = () => {
 
   return (
     <div className="p-6">
-      <div className="mb-6">
+      <div className="pb-6">
         <div className="text-5xl">
           SAVE
           <br />
           THE DATE!
         </div>
       </div>
-      <div className="mb-3">
+      <div className="pb-3">
         <p>お手数ではございますが</p>
         <p>3月25日までに出席のお返事賜りますようお願い申し上げます</p>
       </div>
-      <div className="mb-3">
-        <div className="my-9 text-center">
+      <div className="pb-3">
+        <div className="py-9 text-center">
           <div className="flex justify-center">
             <Radio
               value="yes"
@@ -161,7 +161,7 @@ export const InvitationForm = () => {
           </div>
         </div>
       </div>
-      <div className="mb-3">
+      <div className="pb-3">
         <RadioGroup label="招待元" required error={invitationRadio.error}>
           <Radio
             value="takashi"
@@ -177,66 +177,68 @@ export const InvitationForm = () => {
           />
         </RadioGroup>
       </div>
-      <div className="mb-3">
-        <NameField
-          label={name.label}
-          value={name.value}
-          onChange={name.onChange}
-          firstPlaceholder={name.placeholder?.lastName}
-          secondPlaceholder={name.placeholder?.firstName}
-          errors={name.errors}
-          required
-        />
-      </div>
-      <div className="mb-3">
-        <NameField
-          label={kana.label}
-          value={kana.value}
-          onChange={kana.onChange}
-          firstPlaceholder={kana.placeholder?.lastName}
-          secondPlaceholder={kana.placeholder?.firstName}
-          errors={kana.errors}
-          required
-        />
-      </div>
-      <div className="mb-3">
-        <TextField
-          label={postCode.label}
-          value={postCode.value}
-          onChange={postCode.onChange}
-          placeholder={postCode.placeholder}
-          error={postCode.error}
-          required
-        />
-      </div>
-      <div className="mb-3">
-        <TextField
-          label={address.label}
-          value={address.value}
-          onChange={address.onChange}
-          placeholder={address.placeholder}
-          error={address.error}
-          required
-        />
-      </div>
-      <div className="mb-3">
-        <TextField
-          label={phoneNumber.label}
-          value={phoneNumber.value}
-          onChange={phoneNumber.onChange}
-          placeholder={phoneNumber.placeholder}
-          error={phoneNumber.error}
-          required
-        />
-      </div>
-      <div className="mb-3">
-        <div className="mb-3">アレルギー等</div>
-        <textarea
-          value={note}
-          onChange={handleNote}
-          placeholder="アレルギーやその他注意事項がございましたらご入力ください"
-          className="w-full border border-black p-3"
-        />
+      <div className="pb-6">
+        <div className="pb-3">
+          <NameField
+            label={name.label}
+            value={name.value}
+            onChange={name.onChange}
+            firstPlaceholder={name.placeholder?.lastName}
+            secondPlaceholder={name.placeholder?.firstName}
+            errors={name.errors}
+            required
+          />
+        </div>
+        <div className="pb-3">
+          <NameField
+            label={kana.label}
+            value={kana.value}
+            onChange={kana.onChange}
+            firstPlaceholder={kana.placeholder?.lastName}
+            secondPlaceholder={kana.placeholder?.firstName}
+            errors={kana.errors}
+            required
+          />
+        </div>
+        <div className="pb-3">
+          <TextField
+            label={postCode.label}
+            value={postCode.value}
+            onChange={postCode.onChange}
+            placeholder={postCode.placeholder}
+            error={postCode.error}
+            required
+          />
+        </div>
+        <div className="pb-3">
+          <TextField
+            label={address.label}
+            value={address.value}
+            onChange={address.onChange}
+            placeholder={address.placeholder}
+            error={address.error}
+            required
+          />
+        </div>
+        <div className="pb-3">
+          <TextField
+            label={phoneNumber.label}
+            value={phoneNumber.value}
+            onChange={phoneNumber.onChange}
+            placeholder={phoneNumber.placeholder}
+            error={phoneNumber.error}
+            required
+          />
+        </div>
+        <div className="pb-3">
+          <div className="mb-1">アレルギー等</div>
+          <textarea
+            value={note}
+            onChange={handleNote}
+            placeholder="アレルギーやその他注意事項がございましたらご入力ください"
+            className="w-full border border-black p-3"
+          />
+        </div>
       </div>
       <div className="w-full">
         <button className="w-full p-3 bg-[#EDE9D0]" onClick={onSubmit}>
