@@ -10,7 +10,7 @@ import clsx from 'clsx';
 import { useCallback, useState } from 'react';
 import { CircularProgress } from '@nextui-org/react';
 import { NameField, TextField, Radio, RadioGroup } from '../atoms';
-import { FullName } from '@/domain';
+import { Companion, FullName } from '@/domain';
 
 type FormData = {
   attendance: string;
@@ -44,10 +44,48 @@ export const InvitationForm = () => {
     placeholder: '1111-111-111の形式でご入力ください',
   });
   const [note, setNote] = useState<string>('');
+  const [companions, setCompanions] = useState<Companion[]>([]);
 
   const handleNote = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setNote(e.target.value);
+    },
+    [],
+  );
+
+  const handleAddCompanion = useCallback(() => {
+    setCompanions((prev) => [
+      ...prev,
+      {
+        name: { lastName: '', firstName: '' },
+        kana: { lastName: '', firstName: '' },
+        note: '',
+      },
+    ]);
+  }, []);
+
+  const handleRemoveCompanion = useCallback((idx: number) => {
+    setCompanions((prev) => prev.filter((_, i) => i !== idx));
+  }, []);
+
+  const handleCompanionNameChange = useCallback(
+    (idx: number, field: string, value: FullName) => {
+      setCompanions((prev) =>
+        prev.map((companion, i) =>
+          i === idx ? { ...companion, [field]: value } : companion,
+        ),
+      );
+    },
+    [],
+  );
+
+  const handleCompanionNoteChange = useCallback(
+    (idx: number, value: string) => {
+      setCompanions((prev) =>
+        prev.map((companion, i) =>
+          i === idx ? { ...companion, note: value } : companion,
+        ),
+      );
     },
     [],
   );
@@ -238,6 +276,67 @@ export const InvitationForm = () => {
             placeholder="アレルギーやその他注意事項がございましたらご入力ください"
             className="w-full border border-black p-3"
           />
+        </div>
+        <div className="pb-3">
+          <div>
+            {companions.map((companion, idx) => (
+              <div key={idx} className="pb-3">
+                <hr className="pb-3" />
+                <div className="pb-3">
+                  <NameField
+                    label="姓名"
+                    value={companion.name}
+                    onChange={(lastName, firstName) =>
+                      handleCompanionNameChange(idx, 'name', {
+                        lastName,
+                        firstName,
+                      })
+                    }
+                    firstPlaceholder="姓"
+                    secondPlaceholder="名"
+                    required
+                  />
+                </div>
+                <div className="pb-3">
+                  <NameField
+                    label="ふりがな"
+                    value={companion.kana}
+                    onChange={(lastName, firstName) =>
+                      handleCompanionNameChange(idx, 'kana', {
+                        lastName,
+                        firstName,
+                      })
+                    }
+                    firstPlaceholder="せい"
+                    secondPlaceholder="めい"
+                    required
+                  />
+                </div>
+                <div className="pb-3">
+                  <div className="mb-1">アレルギー等</div>
+                  <textarea
+                    value={companion.note}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                      handleCompanionNoteChange(idx, e.target.value)
+                    }
+                    placeholder="アレルギーやその他注意事項がございましたらご入力ください"
+                    className="w-full border border-black p-3"
+                  />
+                </div>
+
+                <div className="text-right">
+                  <button onClick={() => handleRemoveCompanion(idx)}>
+                    <span className="mr-2">×</span>削除する
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div>
+            <button onClick={handleAddCompanion}>
+              <span className="mr-2">+</span>お連れ様を追加する
+            </button>
+          </div>
         </div>
       </div>
       <div className="w-full">

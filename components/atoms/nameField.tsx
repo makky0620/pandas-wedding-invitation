@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 type Props = {
   label: string;
   value: { lastName: string; firstName: string };
-  onChange: (last: string, first: string) => void;
+  onChange: (lastName: string, firstName: string) => void;
   errors?: { lastName: boolean; firstName: boolean };
   required?: boolean;
   firstPlaceholder?: string;
