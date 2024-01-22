@@ -45,6 +45,12 @@ export const InvitationForm = () => {
   });
   const [note, setNote] = useState<string>('');
   const [companions, setCompanions] = useState<Companion[]>([]);
+  const [errors, setErrors] = useState<
+    {
+      name: { lastName: boolean; firstName: boolean };
+      kana: { lastName: boolean; firstName: boolean };
+    }[]
+  >([]);
 
   const handleNote = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -62,10 +68,18 @@ export const InvitationForm = () => {
         note: '',
       },
     ]);
+    setErrors((prev) => [
+      ...prev,
+      {
+        name: { lastName: false, firstName: false },
+        kana: { lastName: false, firstName: false },
+      },
+    ]);
   }, []);
 
   const handleRemoveCompanion = useCallback((idx: number) => {
     setCompanions((prev) => prev.filter((_, i) => i !== idx));
+    setErrors((prev) => prev.filter((_, i) => i !== idx));
   }, []);
 
   const handleCompanionNameChange = useCallback(
@@ -99,6 +113,13 @@ export const InvitationForm = () => {
     address.clear();
     phoneNumber.clear();
     setNote('');
+    setCompanions((prev) =>
+      prev.map(() => ({
+        name: { lastName: '', firstName: '' },
+        kana: { lastName: '', firstName: '' },
+        note: '',
+      })),
+    );
   }, [
     attendaceRadio,
     invitationRadio,
@@ -117,6 +138,35 @@ export const InvitationForm = () => {
     const invalidPostCode = postCode.validateAndGet();
     const invalidAddress = address.validateAndGet();
     const invalidPhoneNumber = phoneNumber.validateAndGet();
+    const invalidCompanions = companions.some((companion, idx) => {
+      const invalidLastName = companion.name.lastName.length === 0;
+      const invalidFirstName = companion.name.firstName.length === 0;
+      const invalidLastKana = companion.kana.lastName.length === 0;
+      const invalidFirstKana = companion.kana.firstName.length === 0;
+      setErrors((prev) =>
+        prev.map((es, i) =>
+          i === idx
+            ? {
+                name: {
+                  lastName: invalidLastName,
+                  firstName: invalidFirstName,
+                },
+                kana: {
+                  lastName: invalidLastKana,
+                  firstName: invalidFirstKana,
+                },
+              }
+            : es,
+        ),
+      );
+      return (
+        invalidLastName ||
+        invalidFirstName ||
+        invalidLastKana ||
+        invalidFirstKana
+      );
+    });
+
     if (
       invalidAttendance ||
       invalidInvitation ||
@@ -124,7 +174,8 @@ export const InvitationForm = () => {
       invalidKana ||
       invalidPostCode ||
       invalidAddress ||
-      invalidPhoneNumber
+      invalidPhoneNumber ||
+      invalidCompanions
     ) {
       return;
     }
@@ -152,6 +203,7 @@ export const InvitationForm = () => {
     address,
     phoneNumber,
     note,
+    companions,
     addRow,
     clearAll,
   ]);
@@ -292,6 +344,7 @@ export const InvitationForm = () => {
                         firstName,
                       })
                     }
+                    errors={errors[idx].name}
                     firstPlaceholder="姓"
                     secondPlaceholder="名"
                     required
@@ -307,6 +360,7 @@ export const InvitationForm = () => {
                         firstName,
                       })
                     }
+                    errors={errors[idx].kana}
                     firstPlaceholder="せい"
                     secondPlaceholder="めい"
                     required
