@@ -1,3 +1,4 @@
+import { Companion } from '@/domain';
 import { google } from 'googleapis';
 
 export const POST = async (req: Request) => {
@@ -10,6 +11,7 @@ export const POST = async (req: Request) => {
     attendance,
     invitation,
     note,
+    companions,
   } = await req.json();
   const auth = new google.auth.GoogleAuth({
     credentials: {
@@ -29,6 +31,19 @@ export const POST = async (req: Request) => {
     version: 'v4',
   });
 
+  const companionValues = companions.map((c: Companion) => [
+    c.name.lastName,
+    c.name.firstName,
+    c.kana.lastName,
+    c.kana.firstName,
+    '',
+    '',
+    '',
+    '',
+    '',
+    c.note,
+  ]);
+
   await sheets.spreadsheets.values.append({
     spreadsheetId: process.env.SPREADSHEET_ID,
     range: 'Sheet1!A2:C',
@@ -47,6 +62,7 @@ export const POST = async (req: Request) => {
           invitation,
           note,
         ],
+        ...companionValues,
       ],
     },
   });

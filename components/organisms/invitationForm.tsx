@@ -21,6 +21,7 @@ type FormData = {
   address: string;
   phoneNumber: string;
   note: string;
+  companions: Companion[];
 };
 
 export const InvitationForm = () => {
@@ -190,6 +191,7 @@ export const InvitationForm = () => {
       address: address.value,
       phoneNumber: phoneNumber.value,
       note: note,
+      companions: companions,
     });
 
     setIsLoading(false);
