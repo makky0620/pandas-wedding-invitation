@@ -10,7 +10,8 @@ import clsx from 'clsx';
 import { useCallback, useState } from 'react';
 import { CircularProgress } from '@nextui-org/react';
 import { NameField, TextField, Radio, RadioGroup } from '../atoms';
-import { Companion, FullName } from '@/domain';
+import { Companion, CompanionErrors, FullName } from '@/domain';
+import { CompanionForm } from './companionForm';
 
 type FormData = {
   attendance: string;
@@ -46,12 +47,7 @@ export const InvitationForm = () => {
   });
   const [note, setNote] = useState<string>('');
   const [companions, setCompanions] = useState<Companion[]>([]);
-  const [errors, setErrors] = useState<
-    {
-      name: { lastName: boolean; firstName: boolean };
-      kana: { lastName: boolean; firstName: boolean };
-    }[]
-  >([]);
+  const [errors, setErrors] = useState<CompanionErrors[]>([]);
 
   const handleNote = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -83,22 +79,11 @@ export const InvitationForm = () => {
     setErrors((prev) => prev.filter((_, i) => i !== idx));
   }, []);
 
-  const handleCompanionNameChange = useCallback(
-    (idx: number, field: string, value: FullName) => {
+  const handleChangeCompanion = useCallback(
+    (index: number, field: string, value: FullName | string) => {
       setCompanions((prev) =>
         prev.map((companion, i) =>
-          i === idx ? { ...companion, [field]: value } : companion,
-        ),
-      );
-    },
-    [],
-  );
-
-  const handleCompanionNoteChange = useCallback(
-    (idx: number, value: string) => {
-      setCompanions((prev) =>
-        prev.map((companion, i) =>
-          i === idx ? { ...companion, note: value } : companion,
+          i === index ? { ...companion, [field]: value } : companion,
         ),
       );
     },
@@ -332,62 +317,17 @@ export const InvitationForm = () => {
           />
         </div>
         <div className="pb-3">
-          <div>
-            {companions.map((companion, idx) => (
-              <div key={idx} className="pb-3">
-                <hr className="pb-3" />
-                <div className="pb-3">
-                  <NameField
-                    label="姓名"
-                    value={companion.name}
-                    onChange={(lastName, firstName) =>
-                      handleCompanionNameChange(idx, 'name', {
-                        lastName,
-                        firstName,
-                      })
-                    }
-                    errors={errors[idx].name}
-                    firstPlaceholder="姓"
-                    secondPlaceholder="名"
-                    required
-                  />
-                </div>
-                <div className="pb-3">
-                  <NameField
-                    label="ふりがな"
-                    value={companion.kana}
-                    onChange={(lastName, firstName) =>
-                      handleCompanionNameChange(idx, 'kana', {
-                        lastName,
-                        firstName,
-                      })
-                    }
-                    errors={errors[idx].kana}
-                    firstPlaceholder="せい"
-                    secondPlaceholder="めい"
-                    required
-                  />
-                </div>
-                <div className="pb-3">
-                  <div className="mb-1">アレルギー等</div>
-                  <textarea
-                    value={companion.note}
-                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                      handleCompanionNoteChange(idx, e.target.value)
-                    }
-                    placeholder="アレルギーやその他注意事項がございましたらご入力ください"
-                    className="w-full border border-black p-3"
-                  />
-                </div>
-
-                <div className="text-right">
-                  <button onClick={() => handleRemoveCompanion(idx)}>
-                    <span className="mr-2">×</span>削除する
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+          {companions.map((companion, idx) => (
+            <div key={idx} className="pb-3">
+              <CompanionForm
+                index={idx}
+                value={companion}
+                onChange={handleChangeCompanion}
+                onDelete={handleRemoveCompanion}
+                errors={errors[idx]}
+              />
+            </div>
+          ))}
           <div>
             <button onClick={handleAddCompanion}>
               <span className="mr-2">+</span>お連れ様を追加する
