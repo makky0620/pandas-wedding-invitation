@@ -72,7 +72,7 @@ export const guestHasSomeErrors = (errors: GuestError) => {
     errors.kana.lastName ||
     errors.postCode ||
     errors.address ||
-    errors.phoneNumber ||
+    errors.phoneNumber;
 }
 
 
