@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
 import Typewriter from 'typewriter-effect';
 import Title from '../atoms/title';
@@ -42,8 +43,16 @@ export const Outfit = () => {
           <p>正装マナーはございませんので</p>
           <p>ラクな格好でお越しください</p>
         </div>
+        <div className="p-3">
+          <Image
+            src="person.svg"
+            width={120}
+            height={120}
+            alt="Logo of outfit"
+            className="m-auto"
+          />
+        </div>
       </div>
     </div>
   );
 };
-

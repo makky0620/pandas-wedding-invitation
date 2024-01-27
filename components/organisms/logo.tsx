@@ -4,7 +4,7 @@ export const Logo = () => {
   return (
     <div className="mb-6">
       <Image
-        src="logo_small.svg"
+        src="logo.svg"
         width={300}
         height={300}
         alt="Logo of pandas"
