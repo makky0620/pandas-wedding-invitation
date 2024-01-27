@@ -1,17 +1,17 @@
 'use client';
 
-import {
-  useNameField,
-  useRadioGroup,
-  useSpreadsheet,
-  useTextField,
-} from '@/hooks';
-import clsx from 'clsx';
+import { useSpreadsheet } from '@/hooks';
 import { useCallback, useState } from 'react';
 import { CircularProgress } from '@nextui-org/react';
-import { NameField, TextField, Radio, RadioGroup } from '../atoms';
-import { Companion, CompanionErrors, FullName } from '@/domain';
+import {
+  Companion,
+  CompanionErrors,
+  FullName,
+  Guest,
+  GuestError,
+} from '@/domain';
 import { CompanionForm } from './companionForm';
+import { GuestForm } from './guestForm';
 
 type FormData = {
   attendance: string;
@@ -29,32 +29,31 @@ export const InvitationForm = () => {
   const { addRow } = useSpreadsheet<FormData>();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const attendaceRadio = useRadioGroup();
-  const invitationRadio = useRadioGroup();
-  const name = useNameField('お名前', { lastName: '姓', firstName: '名' });
-  const kana = useNameField('ふりがな', {
-    lastName: 'せい',
-    firstName: 'めい',
+  const [guest, setGuest] = useState<Guest>({
+    attendance: '',
+    invitation: '',
+    name: { lastName: '', firstName: '' },
+    kana: { lastName: '', firstName: '' },
+    postCode: '',
+    address: '',
+    phoneNumber: '',
+    note: '',
   });
-  const postCode = useTextField('郵便番号', {
-    placeholder: '111-1111の形式でご入力ださい',
+  const [guestErrors, setGuestErrors] = useState<GuestError>({
+    attendance: false,
+    invitation: false,
+    name: { lastName: false, firstName: false },
+    kana: { lastName: false, firstName: false },
+    postCode: false,
+    address: false,
+    phoneNumber: false,
   });
-  const address = useTextField('ご住所', {
-    placeholder: '神奈川県横浜市都筑区●●-●● ドットマンション101',
-  });
-  const phoneNumber = useTextField('お電話番号', {
-    placeholder: '1111-111-111の形式でご入力ください',
-  });
-  const [note, setNote] = useState<string>('');
   const [companions, setCompanions] = useState<Companion[]>([]);
   const [errors, setErrors] = useState<CompanionErrors[]>([]);
 
-  const handleNote = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setNote(e.target.value);
-    },
-    [],
-  );
+  const handleGuestForm = useCallback((field: string, value: any) => {
+    setGuest((prev) => ({ ...prev, [field]: value }));
+  }, []);
 
   const handleAddCompanion = useCallback(() => {
     setCompanions((prev) => [
@@ -91,14 +90,16 @@ export const InvitationForm = () => {
   );
 
   const clearAll = useCallback(() => {
-    attendaceRadio.clear();
-    invitationRadio.clear();
-    name.clear();
-    kana.clear();
-    postCode.clear();
-    address.clear();
-    phoneNumber.clear();
-    setNote('');
+    setGuest({
+      attendance: '',
+      invitation: '',
+      name: { lastName: '', firstName: '' },
+      kana: { lastName: '', firstName: '' },
+      postCode: '',
+      address: '',
+      phoneNumber: '',
+      note: '',
+    });
     setCompanions((prev) =>
       prev.map(() => ({
         name: { lastName: '', firstName: '' },
@@ -106,24 +107,18 @@ export const InvitationForm = () => {
         note: '',
       })),
     );
-  }, [
-    attendaceRadio,
-    invitationRadio,
-    name,
-    kana,
-    postCode,
-    address,
-    phoneNumber,
-  ]);
+  }, []);
 
   const onSubmit = useCallback(async () => {
-    const invalidAttendance = attendaceRadio.validateAndGet();
-    const invalidInvitation = invitationRadio.validateAndGet();
-    const invalidName = name.validateAndGet();
-    const invalidKana = kana.validateAndGet();
-    const invalidPostCode = postCode.validateAndGet();
-    const invalidAddress = address.validateAndGet();
-    const invalidPhoneNumber = phoneNumber.validateAndGet();
+    const invalidAttendance = guest.attendance.length === 0;
+    const invalidInvitation = guest.invitation.length === 0;
+    const invalidFirstName = guest.name.firstName.length === 0;
+    const invalidLastName = guest.name.lastName.length === 0;
+    const invalidFirstKana = guest.kana.firstName.length === 0;
+    const invalidLastKana = guest.kana.lastName.length === 0;
+    const invalidPostCode = guest.postCode.length === 0;
+    const invalidAddress = guest.address.length === 0;
+    const invalidPhoneNumber = guest.phoneNumber.length === 0;
     const invalidCompanions = companions.some((companion, idx) => {
       const invalidLastName = companion.name.lastName.length === 0;
       const invalidFirstName = companion.name.firstName.length === 0;
@@ -156,44 +151,43 @@ export const InvitationForm = () => {
     if (
       invalidAttendance ||
       invalidInvitation ||
-      invalidName ||
-      invalidKana ||
+      invalidFirstName ||
+      invalidLastName ||
+      invalidFirstKana ||
+      invalidLastKana ||
       invalidPostCode ||
       invalidAddress ||
       invalidPhoneNumber ||
       invalidCompanions
     ) {
+      setGuestErrors({
+        attendance: invalidAttendance,
+        invitation: invalidInvitation,
+        name: { lastName: invalidLastName, firstName: invalidFirstName },
+        kana: { lastName: invalidLastKana, firstName: invalidFirstKana },
+        postCode: invalidPostCode,
+        address: invalidAddress,
+        phoneNumber: invalidPhoneNumber,
+      });
       return;
     }
 
     setIsLoading(true);
     await addRow({
-      attendance: attendaceRadio.selected,
-      invitation: invitationRadio.selected,
-      name: name.value,
-      kana: kana.value,
-      postCode: postCode.value,
-      address: address.value,
-      phoneNumber: phoneNumber.value,
-      note: note,
+      attendance: guest.attendance,
+      invitation: guest.invitation,
+      name: guest.name,
+      kana: guest.kana,
+      postCode: guest.postCode,
+      address: guest.address,
+      phoneNumber: guest.phoneNumber,
+      note: guest.note,
       companions: companions,
     });
 
     setIsLoading(false);
     clearAll();
-  }, [
-    attendaceRadio,
-    invitationRadio,
-    name,
-    kana,
-    postCode,
-    address,
-    phoneNumber,
-    note,
-    companions,
-    addRow,
-    clearAll,
-  ]);
+  }, [guest, companions, addRow, clearAll]);
 
   return (
     <div className="p-6">
@@ -208,114 +202,12 @@ export const InvitationForm = () => {
         <p>お手数ではございますが</p>
         <p>3月25日までに出席のお返事賜りますようお願い申し上げます</p>
       </div>
-      <div className="pb-3">
-        <div className="py-9 text-center">
-          <div className="flex justify-center">
-            <Radio
-              value="yes"
-              name="ご出席"
-              checked={attendaceRadio.selected === 'yes'}
-              onChange={attendaceRadio.onChange}
-              className="mx-2"
-              labelClassName="text-xl"
-            />
-            <Radio
-              value="no"
-              name="ご欠席"
-              checked={attendaceRadio.selected === 'no'}
-              onChange={attendaceRadio.onChange}
-              className="mx-2"
-              labelClassName="text-xl"
-            />
-          </div>
-          <div
-            className={clsx(
-              'text-xl mx-2 mt-1',
-              attendaceRadio.error ? 'text-red-500' : 'text-transparent',
-            )}
-          >
-            ご回答ください
-          </div>
-        </div>
-      </div>
-      <div className="pb-3">
-        <RadioGroup label="招待元" required error={invitationRadio.error}>
-          <Radio
-            value="takashi"
-            name="牧野 孝史"
-            checked={invitationRadio.selected === 'takashi'}
-            onChange={invitationRadio.onChange}
-          />
-          <Radio
-            value="eriko"
-            name="鵜川 恵理子"
-            checked={invitationRadio.selected === 'eriko'}
-            onChange={invitationRadio.onChange}
-          />
-        </RadioGroup>
-      </div>
-      <div className="pb-6">
-        <div className="pb-3">
-          <NameField
-            label={name.label}
-            value={name.value}
-            onChange={name.onChange}
-            firstPlaceholder={name.placeholder?.lastName}
-            secondPlaceholder={name.placeholder?.firstName}
-            errors={name.errors}
-            required
-          />
-        </div>
-        <div className="pb-3">
-          <NameField
-            label={kana.label}
-            value={kana.value}
-            onChange={kana.onChange}
-            firstPlaceholder={kana.placeholder?.lastName}
-            secondPlaceholder={kana.placeholder?.firstName}
-            errors={kana.errors}
-            required
-          />
-        </div>
-        <div className="pb-3">
-          <TextField
-            label={postCode.label}
-            value={postCode.value}
-            onChange={postCode.onChange}
-            placeholder={postCode.placeholder}
-            error={postCode.error}
-            required
-          />
-        </div>
-        <div className="pb-3">
-          <TextField
-            label={address.label}
-            value={address.value}
-            onChange={address.onChange}
-            placeholder={address.placeholder}
-            error={address.error}
-            required
-          />
-        </div>
-        <div className="pb-3">
-          <TextField
-            label={phoneNumber.label}
-            value={phoneNumber.value}
-            onChange={phoneNumber.onChange}
-            placeholder={phoneNumber.placeholder}
-            error={phoneNumber.error}
-            required
-          />
-        </div>
-        <div className="pb-3">
-          <div className="mb-1">アレルギー等</div>
-          <textarea
-            value={note}
-            onChange={handleNote}
-            placeholder="アレルギーやその他注意事項がございましたらご入力ください"
-            className="w-full border border-black p-3"
-          />
-        </div>
+      <div>
+        <GuestForm
+          value={guest}
+          onChange={handleGuestForm}
+          errors={guestErrors}
+        />
         <div className="pb-3">
           {companions.map((companion, idx) => (
             <div key={idx} className="pb-3">
