@@ -1,4 +1,4 @@
-import { FullName } from './fullName';
+import { FullName, FullNameError } from './fullName';
 
 export type Companion = {
   name: FullName;
@@ -7,7 +7,25 @@ export type Companion = {
 };
 
 export type CompanionErrors = {
-  name?: { lastName: boolean; firstName: boolean };
-  kana?: { lastName: boolean; firstName: boolean };
-  note?: boolean;
+  name: FullNameError;
+  kana: FullNameError;
 };
+
+export const validateCompanion = (value: Companion): CompanionErrors => {
+  const invalidLastName = value.name.lastName.length === 0;
+  const invalidFirstName = value.name.firstName.length === 0;
+  const invalidLastKana = value.kana.lastName.length === 0;
+  const invalidFirstKana = value.kana.firstName.length === 0;
+  return {
+    name: { lastName: invalidLastName, firstName: invalidFirstName },
+    kana: { lastName: invalidLastKana, firstName: invalidFirstKana },
+  };
+};
+
+export const companionHasErrors = (errors: CompanionErrors): boolean => {
+  return errors.name.firstName ||
+    errors.name.lastName ||
+    errors.kana.firstName ||
+    errors.kana.lastName;
+
+}

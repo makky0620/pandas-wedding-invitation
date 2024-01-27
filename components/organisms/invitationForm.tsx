@@ -6,12 +6,14 @@ import { CircularProgress } from '@nextui-org/react';
 import {
   Companion,
   CompanionErrors,
+  companionHasErrors,
   emptyGuest,
   FullName,
   Guest,
   GuestError,
   guestHasSomeErrors,
   initialGuestError,
+  validateCompanion,
   validateGuest,
 } from '@/domain';
 import { CompanionForm } from './companionForm';
@@ -90,32 +92,11 @@ export const InvitationForm = () => {
   const onSubmit = useCallback(async () => {
     const guestErrors = validateGuest(guest);
     const invalidCompanions = companions.some((companion, idx) => {
-      const invalidLastName = companion.name.lastName.length === 0;
-      const invalidFirstName = companion.name.firstName.length === 0;
-      const invalidLastKana = companion.kana.lastName.length === 0;
-      const invalidFirstKana = companion.kana.firstName.length === 0;
+      const companionErrors = validateCompanion(companion);
       setErrors((prev) =>
-        prev.map((es, i) =>
-          i === idx
-            ? {
-                name: {
-                  lastName: invalidLastName,
-                  firstName: invalidFirstName,
-                },
-                kana: {
-                  lastName: invalidLastKana,
-                  firstName: invalidFirstKana,
-                },
-              }
-            : es,
-        ),
+        prev.map((es, i) => (i === idx ? companionErrors : es)),
       );
-      return (
-        invalidLastName ||
-        invalidFirstName ||
-        invalidLastKana ||
-        invalidFirstKana
-      );
+      return companionHasErrors(companionErrors);
     });
 
     if (guestHasSomeErrors(guestErrors) || invalidCompanions) {
