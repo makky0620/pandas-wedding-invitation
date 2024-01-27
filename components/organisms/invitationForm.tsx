@@ -6,9 +6,13 @@ import { CircularProgress } from '@nextui-org/react';
 import {
   Companion,
   CompanionErrors,
+  emptyGuest,
   FullName,
   Guest,
   GuestError,
+  guestHasSomeErrors,
+  initialGuestError,
+  validateGuest,
 } from '@/domain';
 import { CompanionForm } from './companionForm';
 import { GuestForm } from './guestForm';
@@ -29,25 +33,8 @@ export const InvitationForm = () => {
   const { addRow } = useSpreadsheet<FormData>();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [guest, setGuest] = useState<Guest>({
-    attendance: '',
-    invitation: '',
-    name: { lastName: '', firstName: '' },
-    kana: { lastName: '', firstName: '' },
-    postCode: '',
-    address: '',
-    phoneNumber: '',
-    note: '',
-  });
-  const [guestErrors, setGuestErrors] = useState<GuestError>({
-    attendance: false,
-    invitation: false,
-    name: { lastName: false, firstName: false },
-    kana: { lastName: false, firstName: false },
-    postCode: false,
-    address: false,
-    phoneNumber: false,
-  });
+  const [guest, setGuest] = useState<Guest>(emptyGuest);
+  const [guestErrors, setGuestErrors] = useState<GuestError>(initialGuestError);
   const [companions, setCompanions] = useState<Companion[]>([]);
   const [errors, setErrors] = useState<CompanionErrors[]>([]);
 
@@ -90,16 +77,7 @@ export const InvitationForm = () => {
   );
 
   const clearAll = useCallback(() => {
-    setGuest({
-      attendance: '',
-      invitation: '',
-      name: { lastName: '', firstName: '' },
-      kana: { lastName: '', firstName: '' },
-      postCode: '',
-      address: '',
-      phoneNumber: '',
-      note: '',
-    });
+    setGuest(emptyGuest);
     setCompanions((prev) =>
       prev.map(() => ({
         name: { lastName: '', firstName: '' },
@@ -110,15 +88,7 @@ export const InvitationForm = () => {
   }, []);
 
   const onSubmit = useCallback(async () => {
-    const invalidAttendance = guest.attendance.length === 0;
-    const invalidInvitation = guest.invitation.length === 0;
-    const invalidFirstName = guest.name.firstName.length === 0;
-    const invalidLastName = guest.name.lastName.length === 0;
-    const invalidFirstKana = guest.kana.firstName.length === 0;
-    const invalidLastKana = guest.kana.lastName.length === 0;
-    const invalidPostCode = guest.postCode.length === 0;
-    const invalidAddress = guest.address.length === 0;
-    const invalidPhoneNumber = guest.phoneNumber.length === 0;
+    const guestErrors = validateGuest(guest);
     const invalidCompanions = companions.some((companion, idx) => {
       const invalidLastName = companion.name.lastName.length === 0;
       const invalidFirstName = companion.name.firstName.length === 0;
@@ -148,27 +118,8 @@ export const InvitationForm = () => {
       );
     });
 
-    if (
-      invalidAttendance ||
-      invalidInvitation ||
-      invalidFirstName ||
-      invalidLastName ||
-      invalidFirstKana ||
-      invalidLastKana ||
-      invalidPostCode ||
-      invalidAddress ||
-      invalidPhoneNumber ||
-      invalidCompanions
-    ) {
-      setGuestErrors({
-        attendance: invalidAttendance,
-        invitation: invalidInvitation,
-        name: { lastName: invalidLastName, firstName: invalidFirstName },
-        kana: { lastName: invalidLastKana, firstName: invalidFirstKana },
-        postCode: invalidPostCode,
-        address: invalidAddress,
-        phoneNumber: invalidPhoneNumber,
-      });
+    if (guestHasSomeErrors(guestErrors) || invalidCompanions) {
+      setGuestErrors(guestErrors);
       return;
     }
 
