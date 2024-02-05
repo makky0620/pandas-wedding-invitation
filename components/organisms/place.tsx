@@ -1,6 +1,7 @@
 'use client';
 
 import { APIProvider, Map, Marker } from '@vis.gl/react-google-maps';
+import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
 import Typewriter from 'typewriter-effect';
 import Title from '../atoms/title';
@@ -84,17 +85,13 @@ export const Place = () => {
             </div>
           </div>
           <div className="mb-3">
-            <APIProvider
-              apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ''}
-            >
-              <Map
-                style={{ width: '100%', aspectRatio: '16 / 9' }}
-                center={{ lat: 35.3178996, lng: 139.5442574 }}
-                zoom={16}
-              >
-                <Marker position={{ lat: 35.3178996, lng: 139.5442574 }} />
-              </Map>
-            </APIProvider>
+            <Image
+              src="access.svg"
+              width={500}
+              height={500}
+              alt="Access"
+              className="m-auto"
+            />
           </div>
           <div>
             <div className="mb-3">
@@ -108,4 +105,3 @@ export const Place = () => {
     </div>
   );
 };
-
