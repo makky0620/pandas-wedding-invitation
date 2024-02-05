@@ -40,7 +40,7 @@ export const Hero = () => {
         )}
         <div className="absolute bottom-[10%] left-4 text-white">
           <div className="text-5xl">HELLO!</div>
-          <div>welcome to our wedding party</div>
+          <div className="text-xl">welcome to our wedding party</div>
         </div>
       </div>
     </div>
