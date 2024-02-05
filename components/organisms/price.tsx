@@ -44,7 +44,7 @@ export const Price = () => {
         </div>
       </div>
       <div>
-        <div className="text-right">PRICE ￥20,000</div>
+        <div className="text-right font-sans font-bold">PRICE ￥20,000</div>
       </div>
     </div>
   );

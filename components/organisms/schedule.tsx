@@ -53,18 +53,18 @@ export const Schedule: React.FC = () => {
         </div>
       </div>
       <div>
-        <table className="table-fixed w-full uppercase">
+        <table className="table-fixed w-full uppercase font-sans">
           <tbody>
             <tr>
-              <td>( 2024. 5. 25 SAT )</td>
+              <td className="font-bold">2024. 5. 25 SAT</td>
             </tr>
             <tr>
               <td>Reception Open</td>
-              <td>15:00</td>
+              <td>14:30</td>
             </tr>
             <tr>
-              <td>Party Star</td>
-              <td>15:30</td>
+              <td>Party Start</td>
+              <td>15:00</td>
             </tr>
             <tr>
               <td>Ending</td>
