@@ -55,7 +55,7 @@ export const Place = () => {
         </div>
       </div>
       <div className="mb-3">
-        <div className="text-xl mb-3">笹野邸</div>
+        <div className="text-xl mb-3 font-extrabold">笹野邸</div>
         <div className="mb-3">
           <div className="mb-3">
             <div>〒248-0017</div>

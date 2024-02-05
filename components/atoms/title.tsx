@@ -16,7 +16,7 @@ const Title = ({
         <Circle />
       </div>
       <div className="flex flex-col items-center justify-start">
-        <div className="pb-3">{children}</div>
+        <div className="pb-3 font-extrabold">{children}</div>
         <div className="border border-black w-2/5" />
       </div>
     </div>
