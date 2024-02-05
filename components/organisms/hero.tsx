@@ -23,7 +23,7 @@ export const Hero = () => {
             muted
             loop
             width="100%"
-            height="750px"
+            height="100vh"
             playsinline
             config={{
               file: {
