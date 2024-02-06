@@ -17,7 +17,7 @@ export const Hero = () => {
         <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50" />
         {hasWindow && (
           <ReactPlayer
-            url="32_output.mp4"
+            url="32_hero.mp4"
             playing
             volume={0}
             muted
