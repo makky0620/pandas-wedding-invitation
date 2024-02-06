@@ -1,6 +1,5 @@
 'use client';
 
-import { APIProvider, Map, Marker } from '@vis.gl/react-google-maps';
 import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
 import Typewriter from 'typewriter-effect';
@@ -13,7 +12,7 @@ export const Place = () => {
   });
 
   return (
-    <div className="ml-4 my-8 p-6 bg-[#F6C90E]">
+    <div id="place" className="ml-4 my-8 p-6 bg-[#F6C90E]">
       <Title align="right">会場はどこなの？</Title>
       <div className="relative mb-6">
         <div ref={ref} className="text-transparent">

@@ -2,7 +2,7 @@ import React from 'react';
 
 export const Greeting = () => {
   return (
-    <div className="px-6 py-12">
+    <div id="greeting" className="px-6 py-12">
       <Paragraph>
         梅のつぼみがふくらみ
         <br />

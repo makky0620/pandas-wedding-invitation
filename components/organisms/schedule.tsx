@@ -11,7 +11,7 @@ export const Schedule: React.FC = () => {
   });
 
   return (
-    <div className="mr-4 my-8 p-6 bg-[#D8C595]">
+    <div id="schedule" className="mr-4 my-8 p-6 bg-[#D8C595]">
       <Title align="left">当日のスケジュールは？</Title>
       <div className="relative mb-6">
         <div ref={ref} className="text-transparent">

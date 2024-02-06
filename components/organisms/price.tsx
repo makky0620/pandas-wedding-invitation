@@ -10,7 +10,7 @@ export const Price = () => {
     triggerOnce: true,
   });
   return (
-    <div className="ml-4 my-8 p-6 bg-[#9CA29A]">
+    <div id="price" className="ml-4 my-8 p-6 bg-[#9CA29A]">
       <Title align="right">パーティーってご祝儀いりますか？</Title>
       <div className="relative mb-3">
         <div ref={ref} className="text-transparent">
