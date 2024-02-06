@@ -5,7 +5,7 @@ export const Footer = () => {
   return (
     <div className="mt-12 pb-6">
       <div className="relative px-4 pt-8 flex flex-col bg-black text-white">
-        <div className="font-bold pb-1">Wedding party</div>
+        <div className="font-bold pb-1">Our wedding party</div>
         <Scroll to="greeting" smooth>
           Greeting
         </Scroll>
