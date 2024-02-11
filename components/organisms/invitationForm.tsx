@@ -83,13 +83,7 @@ export const InvitationForm = () => {
 
   const clearAll = useCallback(() => {
     setGuest(emptyGuest);
-    setCompanions((prev) =>
-      prev.map(() => ({
-        name: { lastName: '', firstName: '' },
-        kana: { lastName: '', firstName: '' },
-        note: '',
-      })),
-    );
+    setCompanions([]);
   }, [setGuest, setCompanions]);
 
   const onSubmit = useCallback(async () => {
@@ -119,7 +113,6 @@ export const InvitationForm = () => {
       note: guest.note,
       companions: companions,
     });
-
     setIsLoading(false);
     clearAll();
   }, [guest, companions, addRow, clearAll, setGuestErrors, setCompanionErrors]);
