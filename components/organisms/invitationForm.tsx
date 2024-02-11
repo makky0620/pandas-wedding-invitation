@@ -9,15 +9,13 @@ import {
   companionHasErrors,
   emptyGuest,
   FullName,
-  Guest,
-  GuestError,
   guestHasSomeErrors,
-  initialGuestError,
   validateCompanion,
   validateGuest,
 } from '@/domain';
 import { CompanionForm } from './companionForm';
 import { GuestForm } from './guestForm';
+import { useGuest } from '@/hooks/use-guest';
 
 type FormData = {
   attendance: string;
@@ -35,14 +33,13 @@ export const InvitationForm = () => {
   const { addRow } = useSpreadsheet<FormData>();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [guest, setGuest] = useState<Guest>(emptyGuest);
-  const [guestErrors, setGuestErrors] = useState<GuestError>(initialGuestError);
+  const { guest, guestErrors, setGuest, setGuestErrors } = useGuest();
   const [companions, setCompanions] = useState<Companion[]>([]);
   const [errors, setErrors] = useState<CompanionErrors[]>([]);
 
   const handleGuestForm = useCallback((field: string, value: any) => {
     setGuest((prev) => ({ ...prev, [field]: value }));
-  }, []);
+  }, [setGuest]);
 
   const handleAddCompanion = useCallback(() => {
     setCompanions((prev) => [
@@ -87,7 +84,7 @@ export const InvitationForm = () => {
         note: '',
       })),
     );
-  }, []);
+  }, [setGuest]);
 
   const onSubmit = useCallback(async () => {
     const guestErrors = validateGuest(guest);
@@ -119,7 +116,7 @@ export const InvitationForm = () => {
 
     setIsLoading(false);
     clearAll();
-  }, [guest, companions, addRow, clearAll]);
+  }, [guest, companions, addRow, clearAll, setGuestErrors]);
 
   return (
     <div className="p-6">
