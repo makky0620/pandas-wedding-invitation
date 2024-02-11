@@ -5,7 +5,6 @@ import { useCallback, useState } from 'react';
 import { CircularProgress } from '@nextui-org/react';
 import {
   Companion,
-  CompanionErrors,
   companionHasErrors,
   emptyGuest,
   FullName,
@@ -16,6 +15,7 @@ import {
 import { CompanionForm } from './companionForm';
 import { GuestForm } from './guestForm';
 import { useGuest } from '@/hooks/use-guest';
+import { useCompanions } from '@/hooks/use-companions';
 
 type FormData = {
   attendance: string;
@@ -34,12 +34,15 @@ export const InvitationForm = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { guest, guestErrors, setGuest, setGuestErrors } = useGuest();
-  const [companions, setCompanions] = useState<Companion[]>([]);
-  const [errors, setErrors] = useState<CompanionErrors[]>([]);
+  const { companions, companionErrors, setCompanions, setCompanionErrors } =
+    useCompanions();
 
-  const handleGuestForm = useCallback((field: string, value: any) => {
-    setGuest((prev) => ({ ...prev, [field]: value }));
-  }, [setGuest]);
+  const handleGuestForm = useCallback(
+    (field: string, value: any) => {
+      setGuest((prev) => ({ ...prev, [field]: value }));
+    },
+    [setGuest],
+  );
 
   const handleAddCompanion = useCallback(() => {
     setCompanions((prev) => [
@@ -50,19 +53,22 @@ export const InvitationForm = () => {
         note: '',
       },
     ]);
-    setErrors((prev) => [
+    setCompanionErrors((prev) => [
       ...prev,
       {
         name: { lastName: false, firstName: false },
         kana: { lastName: false, firstName: false },
       },
     ]);
-  }, []);
+  }, [setCompanions, setCompanionErrors]);
 
-  const handleRemoveCompanion = useCallback((idx: number) => {
-    setCompanions((prev) => prev.filter((_, i) => i !== idx));
-    setErrors((prev) => prev.filter((_, i) => i !== idx));
-  }, []);
+  const handleRemoveCompanion = useCallback(
+    (idx: number) => {
+      setCompanions((prev) => prev.filter((_, i) => i !== idx));
+      setCompanionErrors((prev) => prev.filter((_, i) => i !== idx));
+    },
+    [setCompanions, setCompanionErrors],
+  );
 
   const handleChangeCompanion = useCallback(
     (index: number, field: string, value: FullName | string) => {
@@ -72,7 +78,7 @@ export const InvitationForm = () => {
         ),
       );
     },
-    [],
+    [setCompanions],
   );
 
   const clearAll = useCallback(() => {
@@ -84,13 +90,13 @@ export const InvitationForm = () => {
         note: '',
       })),
     );
-  }, [setGuest]);
+  }, [setGuest, setCompanions]);
 
   const onSubmit = useCallback(async () => {
     const guestErrors = validateGuest(guest);
     const invalidCompanions = companions.some((companion, idx) => {
       const companionErrors = validateCompanion(companion);
-      setErrors((prev) =>
+      setCompanionErrors((prev) =>
         prev.map((es, i) => (i === idx ? companionErrors : es)),
       );
       return companionHasErrors(companionErrors);
@@ -116,7 +122,7 @@ export const InvitationForm = () => {
 
     setIsLoading(false);
     clearAll();
-  }, [guest, companions, addRow, clearAll, setGuestErrors]);
+  }, [guest, companions, addRow, clearAll, setGuestErrors, setCompanionErrors]);
 
   return (
     <div className="p-6">
@@ -145,7 +151,7 @@ export const InvitationForm = () => {
                 value={companion}
                 onChange={handleChangeCompanion}
                 onDelete={handleRemoveCompanion}
-                errors={errors[idx]}
+                errors={companionErrors[idx]}
               />
             </div>
           ))}
