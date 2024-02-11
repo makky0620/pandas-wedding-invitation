@@ -33,6 +33,8 @@ export const InvitationForm = () => {
   const { addRow } = useSpreadsheet<FormData>();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [submitError, setSubmitError] = useState<boolean>(false);
+  const [submitSucceed, setSubmitSucceed] = useState<boolean>(false);
   const { guest, guestErrors, setGuest, setGuestErrors } = useGuest();
   const { companions, companionErrors, setCompanions, setCompanionErrors } =
     useCompanions();
@@ -102,7 +104,10 @@ export const InvitationForm = () => {
     }
 
     setIsLoading(true);
-    await addRow({
+    setSubmitError(false);
+    setSubmitSucceed(false);
+
+    const res = await addRow({
       attendance: guest.attendance,
       invitation: guest.invitation,
       name: guest.name,
@@ -113,8 +118,17 @@ export const InvitationForm = () => {
       note: guest.note,
       companions: companions,
     });
+
     setIsLoading(false);
-    clearAll();
+
+    if (!res.ok) {
+      setSubmitError(true);
+      return;
+    } else {
+      setSubmitError(false);
+      setSubmitSucceed(true);
+      clearAll();
+    }
   }, [guest, companions, addRow, clearAll, setGuestErrors, setCompanionErrors]);
 
   return (
@@ -159,6 +173,12 @@ export const InvitationForm = () => {
         <button className="w-full p-3 bg-[#EDE9D0]" onClick={onSubmit}>
           上記の内容で送信する
         </button>
+        <div className="text-center">
+          {submitError && (
+            <div className="text-red-500">送信に失敗しました</div>
+          )}
+          {submitSucceed && <div>送信に成功しました</div>}
+        </div>
       </div>
       {isLoading && (
         <div className="fixed w-full h-full top-0 left-0 flex items-center justify-center bg-black bg-opacity-10">
