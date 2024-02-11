@@ -1,5 +1,6 @@
 'use client';
 import { Link as Scroll } from 'react-scroll';
+import { FaGithub } from 'react-icons/fa';
 
 export const Footer = () => {
   return (
@@ -27,6 +28,17 @@ export const Footer = () => {
         <Scroll to="top" smooth className="mt-3">
           Back to top ↑
         </Scroll>
+      </div>
+      <div className=" bg-black">
+        <a
+          href="https://github.com/makky0620/pandas-wedding-invitation"
+          className="flex flex-col text-center items-center justify-center"
+        >
+          <FaGithub color="white" size={30} />
+          <div className="font-thin text-xs mt-2 text-gray-500">
+            コードはこちら
+          </div>
+        </a>
       </div>
       <div className="mt-[0px] h-[23px] bg-black" />
       <div className="mt-[1px] h-[22px] bg-black" />
