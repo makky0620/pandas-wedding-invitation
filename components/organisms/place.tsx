@@ -12,7 +12,7 @@ export const Place = () => {
   });
 
   return (
-    <div id="place" className="ml-4 my-8 p-6 bg-[#F6C90E]">
+    <div id="place" className="ml-4 my-16 p-6 bg-[#F6C90E]">
       <Title align="right">会場はどこなの？</Title>
       <div className="relative mb-6">
         <div ref={ref} className="text-transparent">

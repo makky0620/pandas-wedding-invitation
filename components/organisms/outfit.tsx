@@ -12,7 +12,7 @@ export const Outfit = () => {
   });
 
   return (
-    <div id="outfit" className="mr-4 my-8 p-6 bg-[#EDE9D0]">
+    <div id="outfit" className="mr-4 my-16 p-6 bg-[#EDE9D0]">
       <Title align="left">どんな格好で行けばいい？</Title>
       <div className="relative mb-6">
         <div ref={ref} className="text-transparent">
