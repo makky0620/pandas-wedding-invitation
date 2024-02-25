@@ -6,6 +6,7 @@ export * from './outfit';
 export * from './place';
 export * from './price';
 export * from './schedule';
+export * from './familySchedule';
 export * from './header';
 export * from './logo';
 export * from './footer';

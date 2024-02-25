@@ -1,10 +1,11 @@
+
 'use client';
 
 import { useInView } from 'react-intersection-observer';
 import Typewriter from 'typewriter-effect';
 import Title from '../atoms/title';
 
-export const Schedule: React.FC = () => {
+export const FamilySchedule: React.FC = () => {
   const { ref, inView } = useInView({
     rootMargin: '-10px',
     triggerOnce: true,
@@ -53,14 +54,18 @@ export const Schedule: React.FC = () => {
         </div>
       </div>
       <div>
-        <table className="table-fixed w-full uppercase font-sans">
+        <table className="w-full uppercase font-sans">
           <tbody>
             <tr>
               <td className="font-bold">2024. 5. 25 SAT</td>
             </tr>
             <tr>
-              <td>Reception Open</td>
-              <td>14:30</td>
+              <td>Pre-ceremony Start</td>
+              <td>13:00</td>
+            </tr>
+            <tr>
+              <td>Pre-ceremony Close</td>
+              <td>14:00</td>
             </tr>
             <tr>
               <td>Party Start</td>
